@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Custos e Aderência de Programas Governamentais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#151A21; --tinta-70:#4A535F; --tinta-40:#8A93A0;
+  --linha:#D8DCE2; --linha-forte:#B9C0C9; --nevoa:#EBEEF1; --carta:#FFFFFF;
+  --selo:#1F5E5B; --ia:#4B3FA8; --alerta:#B4670F; --alerta-luz:#F8EEDF; --r:4px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--nevoa);color:var(--tinta);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;margin:0;letter-spacing:-.01em}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ia);outline-offset:2px}
+.mono{font-family:"IBM Plex Mono",monospace}
+
+.topo{background:var(--tinta);color:#fff;padding:42px 24px 38px;border-bottom:3px solid var(--ia)}
+.int{max-width:1040px;margin:0 auto}
+.topo .selo{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9AA4B2}
+.topo h1{font-size:33px;font-weight:700;margin:10px 0 12px;max-width:22ch}
+.topo p{margin:0;color:#B9C2CD;font-size:16px;max-width:66ch}
+.topo .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.topo .tags span{background:#232C3A;border:1px solid #38445A;border-radius:20px;padding:4px 12px;font-size:12px;color:#CBD4DF}
+
+main{max-width:1040px;margin:0 auto;padding:26px 24px 60px}
+h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--tinta-70);padding-bottom:8px;border-bottom:2px solid var(--tinta);margin:0 0 14px}
+
+.destaque{background:var(--carta);border:1px solid var(--linha);border-left:4px solid var(--ia);border-radius:var(--r);padding:20px 22px;margin-bottom:26px;text-decoration:none;display:block;transition:border-color .12s}
+.destaque:hover{border-color:var(--ia)}
+.destaque .et{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ia)}
+.destaque h3{font-size:23px;margin:5px 0 8px}
+.destaque p{margin:0 0 12px;font-size:14px;color:var(--tinta-70)}
+.destaque .ir{font-size:13.5px;font-weight:600;color:var(--ia)}
+
+.cartoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:26px}
+.cartao{display:block;background:var(--carta);border:1px solid var(--linha);border-radius:var(--r);padding:15px 17px;text-decoration:none}
+.cartao:hover{border-color:var(--ia)}
+.cartao .et{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-40)}
+.cartao h3{font-size:17px;margin:4px 0 6px}
+.cartao p{margin:0;font-size:12.5px;color:var(--tinta-70);line-height:1.45}
+
+.achados{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:26px}
+.achado{background:var(--carta);border:1px solid var(--linha);border-top:3px solid var(--selo);border-radius:var(--r);padding:14px 16px}
+.achado.alerta{border-top-color:var(--alerta)}
+.achado .n{font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600}
+.achado .t{font-size:13px;color:var(--tinta-70);margin-top:5px;line-height:1.45}
+
+.docs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.docs a{background:var(--carta);border:1px solid var(--linha-forte);border-radius:var(--r);padding:10px 14px;text-decoration:none;font-size:13.5px}
+.docs a:hover{border-color:var(--tinta)}
+.docs a small{display:block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-40)}
+
+.aviso{background:var(--alerta-luz);border:1px solid #E7CFA6;border-radius:var(--r);padding:14px 16px;font-size:13.5px;line-height:1.55}
+footer{max-width:1040px;margin:0 auto;padding:0 24px 40px;font-size:12.5px;color:var(--tinta-40)}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="int">
+    <div class="selo">Protótipo · Documento de trabalho</div>
+    <h1>Painel de Custos e Aderência de Programas Governamentais</h1>
+    <p>Planejamento, orçamento e execução integrados, com inteligência artificial para apurar o custo por programa e verificar se cada contrato serve à finalidade que o financia.</p>
+    <div class="tags"><span>Campo Grande · MS</span><span>PPA 2026-2029</span><span>Exercício 2026</span><span>Programa 19 · piloto</span></div>
+  </div>
+</header>
+
+<main>
+  <a class="destaque" href="painel-campo-grande-2026.html">
+    <div class="et">Comece por aqui</div>
+    <h3>Painel de Campo Grande · 2026</h3>
+    <p>Os 55 programas do PPA, o programa 19 com suas cinco ações, a conciliação com a LOA e a execução do exercício. Dados reais, já embutidos no arquivo — abre no navegador, sem instalação.</p>
+    <span class="ir">Abrir o painel →</span>
+  </a>
+
+  <h2 class="sec">O que os dados mostram</h2>
+  <div class="achados">
+    <div class="achado"><div class="n">100%</div><div class="t">de conciliação entre PPA e LOA no programa 19: mesmas cinco ações, mesmos valores nas duas leis</div></div>
+    <div class="achado alerta"><div class="n">24 metas</div><div class="t">concretas declaradas na lei do PPA chegam ao controle externo como "porcentagem, 25% ao ano"</div></div>
+    <div class="achado alerta"><div class="n">4% e 1,9%</div><div class="t">de liquidação nas duas ações de expansão da rede, contra cerca de 55% nas de manutenção</div></div>
+    <div class="achado alerta"><div class="n">0 de 55</div><div class="t">programas declaram público-alvo — metade da régua da análise de contratos está em branco</div></div>
+  </div>
+
+  <h2 class="sec">Também neste repositório</h2>
+  <div class="cartoes">
+    <a class="cartao" href="painel-municipio.html">
+      <div class="et">Modelo</div><h3>Painel vazio</h3>
+      <p>Mesma estrutura, sem dados. Recebe outro município por arquivo JSON.</p>
+    </a>
+    <a class="cartao" href="mapa-do-fluxo.html">
+      <div class="et">Especificação</div><h3>Mapa do fluxo</h3>
+      <p>As 11 etapas abertas uma a uma: origem, campos, regras de tratamento e pontos de exceção.</p>
+    </a>
+    <a class="cartao" href="painel-ppa-execucao-contratos.html">
+      <div class="et">Histórico</div><h3>Protótipo genérico</h3>
+      <p>Primeira versão, com dados fictícios, anterior ao caso real.</p>
+    </a>
+  </div>
+
+  <h2 class="sec">Documentos</h2>
+  <div class="docs">
+    <a href="docs/Proposta_Solucao_Painel_Custos_Aderencia.docx"><small>Word</small>Proposta de solução</a>
+    <a href="docs/Apresentacao_Completa_Documento.pptx"><small>PowerPoint · 27 slides</small>Apresentação completa</a>
+    <a href="docs/Apresentacao_Resumida.pptx"><small>PowerPoint · 11 slides</small>Versão resumida</a>
+  </div>
+
+  <div class="aviso">
+    <b>Sobre os dados.</b> Vêm das remessas ao TCE/MS e das leis publicadas no DIOGRANDE, e são exibidos como estão.
+    Nenhum valor é estimado pelo painel: campo ausente aparece como lacuna, nunca como zero.
+    Este é um protótipo de trabalho, sem backend e sem integração automática com os sistemas de origem;
+    a análise de aderência contratual está desenhada, mas ainda não conectada.
+  </div>
+</main>
+
+<footer>Documento de trabalho, sujeito a revisão. Os apontamentos exibidos são leituras dos dados carregados e devem ser conferidos junto aos órgãos responsáveis antes de qualquer uso formal.</footer>
+
+</body>
+</html>

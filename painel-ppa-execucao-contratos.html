@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel PPA × Execução × Contratos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#151A21;
+  --tinta-70:#4A535F;
+  --tinta-40:#8A93A0;
+  --linha:#D8DCE2;
+  --linha-forte:#B9C0C9;
+  --nevoa:#EBEEF1;
+  --carta:#FFFFFF;
+  --selo:#1F5E5B;
+  --selo-luz:#E4EFEC;
+  --alerta:#B4670F;
+  --alerta-luz:#F8EEDF;
+  --diverg:#9E2A3C;
+  --diverg-luz:#F7E7E9;
+  --ia:#4B3FA8;
+  --ia-luz:#ECEAF8;
+  --r:4px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--nevoa);
+  color:var(--tinta);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;margin:0;letter-spacing:-.01em}
+.num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ia);outline-offset:2px}
+
+/* ---------- cabeçalho ---------- */
+.topo{
+  background:var(--tinta);color:#fff;
+  padding:18px 24px 16px;
+  position:sticky;top:0;z-index:20;
+  border-bottom:3px solid var(--ia);
+}
+.topo-linha{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;max-width:1320px;margin:0 auto}
+.marca{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.marca h1{font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.marca .sub{font-size:12px;color:#9AA4B2;font-family:"IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+.controles{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.campo{display:flex;flex-direction:column;gap:4px}
+.campo label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9AA4B2;font-family:"IBM Plex Mono",monospace}
+.campo select{
+  background:#232A34;border:1px solid #39424F;color:#fff;
+  border-radius:var(--r);padding:7px 10px;font-size:13px;min-width:190px;
+}
+
+/* ---------- fluxo (assinatura) ---------- */
+.fluxo{background:var(--carta);border-bottom:1px solid var(--linha);padding:20px 24px 12px}
+.fluxo-int{max-width:1320px;margin:0 auto}
+.fluxo-tit{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.fluxo-tit h2{font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--tinta-70)}
+.fluxo-tit .dica{font-size:12px;color:var(--tinta-40)}
+.fluxo svg{width:100%;height:auto;display:block}
+.no rect{fill:var(--carta);stroke:var(--linha-forte);stroke-width:1.5}
+.no text{font-family:"IBM Plex Sans Condensed",sans-serif;font-size:15px;font-weight:600;fill:var(--tinta)}
+.no .cod{font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;fill:var(--tinta-40);letter-spacing:.08em}
+.no{cursor:pointer}
+.no:hover rect{stroke:var(--tinta);stroke-width:2}
+.no.ia rect{fill:var(--ia-luz);stroke:var(--ia);stroke-dasharray:5 3}
+.no.ia text{fill:var(--ia)}
+.no.saida rect{fill:var(--tinta);stroke:var(--tinta)}
+.no.saida text{fill:#fff}
+.no.saida .cod{fill:#9AA4B2}
+.fio{stroke:var(--linha-forte);stroke-width:1.5;fill:none}
+.fio.ia{stroke:var(--ia);stroke-dasharray:5 3}
+.fase-sel{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;fill:var(--tinta-40)}
+.fluxo-mob{display:none;gap:8px;flex-wrap:wrap}
+.fluxo-mob button{
+  background:var(--carta);border:1px solid var(--linha-forte);border-radius:var(--r);
+  padding:8px 10px;text-align:left;flex:1 1 46%;cursor:pointer;
+}
+.fluxo-mob button b{display:block;font-size:13px}
+.fluxo-mob button span{font-size:10px;font-family:"IBM Plex Mono",monospace;color:var(--tinta-40);letter-spacing:.08em}
+
+/* ---------- conteúdo ---------- */
+main{max-width:1320px;margin:0 auto;padding:22px 24px 60px}
+section{margin-bottom:34px;scroll-margin-top:96px}
+.cab-secao{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--tinta)}
+.cab-secao .fase{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+  background:var(--tinta);color:#fff;padding:3px 7px;border-radius:2px;
+}
+.cab-secao h2{font-size:19px;text-transform:uppercase;letter-spacing:.02em}
+.cab-secao p{margin:0;font-size:13px;color:var(--tinta-70);flex:1 1 260px}
+
+.cartoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:12px}
+.kpi{background:var(--carta);border:1px solid var(--linha);border-radius:var(--r);padding:14px 16px;border-top:3px solid var(--tinta)}
+.kpi.ia{border-top-color:var(--ia)}
+.kpi .rot{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-40);font-family:"IBM Plex Mono",monospace}
+.kpi .val{font-size:26px;font-weight:600;margin-top:6px;line-height:1.15;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.kpi .val .un{font-size:.52em;font-weight:500;color:var(--tinta-40);margin-left:3px;letter-spacing:.04em}
+.kpi .val .cif{font-size:.6em;font-weight:500;color:var(--tinta-40);margin-right:4px}
+.kpi .exato{font-size:11px;color:var(--tinta-40);margin-top:3px;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+@media(max-width:520px){.kpi .val{font-size:23px}}
+.kpi .nota{font-size:12px;color:var(--tinta-70);margin-top:5px}
+
+.painel{background:var(--carta);border:1px solid var(--linha);border-radius:var(--r);padding:16px 18px}
+.grade2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:900px){.grade2{grid-template-columns:1fr}}
+
+/* árvore PPA */
+.prog-obj{font-size:14px;color:var(--tinta-70);border-left:3px solid var(--selo);padding-left:12px;margin-bottom:14px}
+.prog-obj b{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-40);font-family:"IBM Plex Mono",monospace;margin-bottom:3px}
+.acao{border-top:1px solid var(--linha);padding:11px 0}
+.acao:first-of-type{border-top:none}
+.acao-cab{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.acao-cab .cod{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--tinta-40);letter-spacing:.06em}
+.acao-cab .nome{font-weight:600;font-size:14px}
+.meta-valor{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600}
+.meta-linha{display:flex;gap:14px;flex-wrap:wrap;margin-top:5px;font-size:12px;color:var(--tinta-70)}
+.meta-linha span b{font-family:"IBM Plex Mono",monospace;color:var(--tinta)}
+
+/* barras execução */
+.barra-bloco{margin-top:8px}
+.barra{position:relative;height:22px;background:var(--nevoa);border-radius:2px;overflow:hidden}
+.barra i{position:absolute;top:0;bottom:0;left:0;display:block}
+.barra .emp{background:var(--linha-forte)}
+.barra .liq{background:var(--selo)}
+.barra-leg{display:flex;gap:14px;font-size:11px;color:var(--tinta-70);margin-top:5px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace}
+.chave{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:baseline}
+
+/* tabela */
+.rolagem{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{
+  text-align:right;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--tinta-40);font-weight:500;padding:0 10px 7px;border-bottom:1px solid var(--linha-forte);white-space:nowrap;
+}
+th:first-child,td:first-child{text-align:left}
+td{padding:10px;border-bottom:1px solid var(--linha);text-align:right;white-space:nowrap}
+td.esq{text-align:left;white-space:normal;min-width:200px}
+tr:last-child td{border-bottom:none}
+tfoot td{font-weight:600;border-top:2px solid var(--tinta);border-bottom:none}
+.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+
+/* marcação de inferência da IA */
+.ia-marca{border-bottom:2px dotted var(--ia);color:var(--ia);font-weight:600}
+.selo-ia{
+  display:inline-flex;align-items:center;gap:5px;background:var(--ia-luz);color:var(--ia);
+  border:1px solid #C9C3EE;border-radius:20px;padding:2px 9px;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;
+}
+.legenda-ia{display:flex;gap:8px;align-items:flex-start;background:var(--ia-luz);border:1px solid #D5D0F0;border-radius:var(--r);padding:9px 12px;font-size:12px;color:#3B3080;margin-bottom:14px}
+
+.desvio-pos{color:var(--diverg);font-weight:600}
+.desvio-neg{color:var(--selo);font-weight:600}
+
+/* contratos */
+.filtro-ver{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filtro-ver button{
+  background:var(--carta);border:1px solid var(--linha-forte);border-radius:20px;
+  padding:5px 13px;font-size:12px;cursor:pointer;
+}
+.filtro-ver button[aria-pressed="true"]{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.contratos{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.ct{background:var(--carta);border:1px solid var(--linha);border-left:4px solid var(--linha-forte);border-radius:var(--r);padding:14px 16px}
+.ct.conforme{border-left-color:var(--selo)}
+.ct.atencao{border-left-color:var(--alerta)}
+.ct.divergente{border-left-color:var(--diverg)}
+.ct-cab{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ct-cab .numero{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--tinta-40);letter-spacing:.06em}
+.ct-cab .forn{font-weight:600;font-size:15px;line-height:1.25}
+.ct .objeto{font-size:13px;color:var(--tinta-70);margin:7px 0 10px}
+.medidor{display:flex;align-items:center;gap:10px}
+.medidor .trilho{flex:1;height:7px;background:var(--nevoa);border-radius:4px;overflow:hidden}
+.medidor .trilho i{display:block;height:100%}
+.ct.conforme .trilho i{background:var(--selo)}
+.ct.atencao .trilho i{background:var(--alerta)}
+.ct.divergente .trilho i{background:var(--diverg)}
+.medidor .pct{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:16px}
+.ct-rod{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:11px;flex-wrap:wrap}
+.etiq{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+.etiq.conforme{background:var(--selo-luz);color:var(--selo)}
+.etiq.atencao{background:var(--alerta-luz);color:var(--alerta)}
+.etiq.divergente{background:var(--diverg-luz);color:var(--diverg)}
+.ct button.abrir{background:none;border:none;padding:0;cursor:pointer;font-size:12px;color:var(--ia);text-decoration:underline;text-underline-offset:3px}
+.parecer{display:none;margin-top:11px;padding-top:11px;border-top:1px dashed var(--linha-forte);font-size:13px}
+.ct.aberto .parecer{display:block}
+.parecer h4{margin:0 0 5px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ia);font-family:"IBM Plex Mono",monospace}
+.parecer p{margin:0 0 9px;color:var(--tinta-70)}
+.parecer ul{margin:0;padding-left:17px;color:var(--tinta-70)}
+.parecer li{margin-bottom:3px}
+.confronto{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}
+.confronto div{background:var(--nevoa);border-radius:var(--r);padding:8px 10px;font-size:12px}
+.confronto b{display:block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-40);font-family:"IBM Plex Mono",monospace;margin-bottom:3px}
+@media(max-width:520px){.confronto{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--linha);padding:18px 24px 40px;font-size:12px;color:var(--tinta-40)}
+footer .int{max-width:1320px;margin:0 auto;display:flex;gap:26px;flex-wrap:wrap}
+footer b{color:var(--tinta-70);display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+
+@media(max-width:760px){
+  .fluxo svg{display:none}
+  .fluxo-mob{display:flex}
+  main{padding:18px 14px 40px}
+  .topo{padding:14px}
+  .fluxo{padding:14px}
+}
+@media(prefers-reduced-motion:no-preference){
+  .ct,.kpi{transition:border-color .15s ease}
+}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="topo-linha">
+    <div class="marca">
+      <h1>Painel PPA × Execução × Contratos</h1>
+      <span class="sub">Exercício 2026 · dados demonstrativos</span>
+    </div>
+    <div class="controles">
+      <div class="campo">
+        <label for="selProg">Programa</label>
+        <select id="selProg"></select>
+      </div>
+      <div class="campo">
+        <label for="selExerc">Exercício</label>
+        <select id="selExerc"><option>2026</option><option>2025</option></select>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="fluxo">
+  <div class="fluxo-int">
+    <div class="fluxo-tit">
+      <h2>Fluxo do painel</h2>
+      <span class="dica">Clique em uma etapa para ir até ela</span>
+    </div>
+
+    <svg viewBox="0 0 1240 300" role="img" aria-label="Fluxo: PPA, programa, ação e meta física; contrato, execução e liquidação; cruzamentos por IA gerando custo do programa e aderência à finalidade">
+      <text class="fase-sel" x="0" y="18">FASE 1 — PLANEJAMENTO (PPA)</text>
+      <text class="fase-sel" x="0" y="178">FASE 2 — EXECUÇÃO</text>
+      <text class="fase-sel" x="700" y="18">FASE 3 e 4 — CRUZAMENTOS POR IA</text>
+
+      <path class="fio" d="M178 60 H208"/>
+      <path class="fio" d="M356 60 H386"/>
+      <path class="fio" d="M534 60 H564"/>
+      <path class="fio" d="M712 60 H760 V108 H800"/>
+      <path class="fio" d="M178 220 H208"/>
+      <path class="fio" d="M356 220 H386"/>
+      <path class="fio" d="M534 220 H760 V132 H800"/>
+      <path class="fio ia" d="M968 120 H1010"/>
+      <path class="fio ia" d="M120 96 V240 M120 240 H130"/>
+      <path class="fio" d="M120 92 V196"/>
+      <path class="fio ia" d="M148 250 H200 V250"/>
+      <path class="fio ia" d="M968 240 H1010"/>
+      <path class="fio ia" d="M356 244 H760 V228 H800"/>
+      <path class="fio ia" d="M712 84 H736 V252 H800"/>
+
+      <g class="no" data-alvo="fase1" tabindex="0" role="link">
+        <rect x="0" y="34" width="178" height="52" rx="3"/>
+        <text class="cod" x="14" y="52">PLANO PLURIANUAL</text>
+        <text x="14" y="72">Objetivo</text>
+      </g>
+      <g class="no" data-alvo="fase1" tabindex="0" role="link">
+        <rect x="208" y="34" width="148" height="52" rx="3"/>
+        <text class="cod" x="222" y="52">NÍVEL 2</text>
+        <text x="222" y="72">Programa</text>
+      </g>
+      <g class="no" data-alvo="fase1" tabindex="0" role="link">
+        <rect x="386" y="34" width="148" height="52" rx="3"/>
+        <text class="cod" x="400" y="52">NÍVEL 3</text>
+        <text x="400" y="72">Ação</text>
+      </g>
+      <g class="no" data-alvo="fase1" tabindex="0" role="link">
+        <rect x="564" y="34" width="148" height="52" rx="3"/>
+        <text class="cod" x="578" y="52">EXTRAÇÃO</text>
+        <text x="578" y="72">Meta física</text>
+      </g>
+
+      <g class="no" data-alvo="fase2" tabindex="0" role="link">
+        <rect x="0" y="194" width="178" height="52" rx="3"/>
+        <text class="cod" x="14" y="212">FONTE</text>
+        <text x="14" y="232">Contrato</text>
+      </g>
+      <g class="no" data-alvo="fase2" tabindex="0" role="link">
+        <rect x="208" y="194" width="148" height="52" rx="3"/>
+        <text class="cod" x="222" y="212">EMPENHO</text>
+        <text x="222" y="232">Execução</text>
+      </g>
+      <g class="no" data-alvo="fase2" tabindex="0" role="link">
+        <rect x="386" y="194" width="148" height="52" rx="3"/>
+        <text class="cod" x="400" y="212">EXTRAÇÃO</text>
+        <text x="400" y="232">Liquidação</text>
+      </g>
+
+      <g class="no ia" data-alvo="fase3" tabindex="0" role="link">
+        <rect x="800" y="94" width="168" height="52" rx="3"/>
+        <text class="cod" x="814" y="112">FASE 3 · IA</text>
+        <text x="814" y="132">Meta × Liquidação</text>
+      </g>
+      <g class="no saida" data-alvo="fase3" tabindex="0" role="link">
+        <rect x="1010" y="94" width="230" height="52" rx="3"/>
+        <text class="cod" x="1024" y="112">RESULTADO</text>
+        <text x="1024" y="132">Custo do programa</text>
+      </g>
+
+      <g class="no ia" data-alvo="fase4" tabindex="0" role="link">
+        <rect x="800" y="214" width="168" height="52" rx="3"/>
+        <text class="cod" x="814" y="232">FASE 4 · IA</text>
+        <text x="814" y="252">Contrato × Objetivo</text>
+      </g>
+      <g class="no saida" data-alvo="fase4" tabindex="0" role="link">
+        <rect x="1010" y="214" width="230" height="52" rx="3"/>
+        <text class="cod" x="1024" y="232">RESULTADO</text>
+        <text x="1024" y="252">Aderência à finalidade</text>
+      </g>
+    </svg>
+
+    <div class="fluxo-mob">
+      <button data-alvo="fase1"><span>FASE 1</span><b>Programa → Ação → Meta física</b></button>
+      <button data-alvo="fase2"><span>FASE 2</span><b>Execução → Liquidação</b></button>
+      <button data-alvo="fase3"><span>FASE 3 · IA</span><b>Custo do programa</b></button>
+      <button data-alvo="fase4"><span>FASE 4 · IA</span><b>Aderência do contrato</b></button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section id="resumo" aria-label="Indicadores gerais">
+    <div class="cartoes" id="kpis"></div>
+  </section>
+
+  <section id="fase1">
+    <div class="cab-secao">
+      <span class="fase">FASE 1</span>
+      <h2>Planejamento — PPA</h2>
+      <p>Extração da cadeia Plano Plurianual → Programa → Ação, com a meta física de cada ação e a meta financeira correspondente.</p>
+    </div>
+    <div class="grade2">
+      <div class="painel" id="ppaObjetivo"></div>
+      <div class="painel" id="ppaAcoes"></div>
+    </div>
+  </section>
+
+  <section id="fase2">
+    <div class="cab-secao">
+      <span class="fase">FASE 2</span>
+      <h2>Execução orçamentária</h2>
+      <p>Extração do empenhado, liquidado e pago por ação. A liquidação é a base do cruzamento seguinte.</p>
+    </div>
+    <div class="painel" id="execucao"></div>
+  </section>
+
+  <section id="fase3">
+    <div class="cab-secao">
+      <span class="fase">FASE 3 · IA</span>
+      <h2>Custo apurado do programa</h2>
+      <p>A IA concilia meta física com liquidação e devolve o custo unitário realizado e o desvio frente ao previsto.</p>
+    </div>
+    <div class="legenda-ia">
+      <span class="selo-ia">IA</span>
+      <span>Valores com <span class="ia-marca">marcação pontilhada</span> são inferidos pelo modelo a partir de notas de liquidação, medições e memórias de cálculo. Cada linha traz o grau de confiança e exige homologação do responsável antes de virar informação oficial.</span>
+    </div>
+    <div class="painel rolagem" id="custos"></div>
+  </section>
+
+  <section id="fase4">
+    <div class="cab-secao">
+      <span class="fase">FASE 4 · IA</span>
+      <h2>Aderência do contrato à finalidade</h2>
+      <p>A IA compara o objeto contratado com o objetivo do programa e classifica o vínculo entre o gasto e a finalidade declarada.</p>
+    </div>
+    <div class="filtro-ver" id="filtros" role="group" aria-label="Filtrar por classificação">
+      <button data-ver="todos" aria-pressed="true">Todos</button>
+      <button data-ver="conforme" aria-pressed="false">Conformes</button>
+      <button data-ver="atencao" aria-pressed="false">Atenção</button>
+      <button data-ver="divergente" aria-pressed="false">Divergentes</button>
+    </div>
+    <div class="contratos" id="contratos"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="int">
+    <div><b>Fase 1 — origem</b>Lei do PPA, LOA e módulo de planejamento<br>(programa, ação, produto, meta física e meta financeira)</div>
+    <div><b>Fase 2 — origem</b>Sistema de execução orçamentária<br>(empenho, liquidação, pagamento, credor)</div>
+    <div><b>Fase 3 e 4 — IA</b>Conciliação de meta × liquidação e análise semântica objeto × objetivo<br>Toda inferência é sugestão sujeita a homologação</div>
+  </div>
+</footer>
+
+<script>
+const dados = [
+  {
+    id:"0021", nome:"Atenção Básica em Saúde",
+    objetivo:"Ampliar o acesso da população à atenção primária, com manutenção e expansão da rede de unidades básicas e garantia de abastecimento de medicamentos essenciais.",
+    valorPPA:48700000, orgao:"Secretaria de Estado de Saúde",
+    acoes:[
+      {cod:"2145", nome:"Manutenção das unidades básicas de saúde", metaFinanceira:18400000, metaFisica:62, realizado:58, unid:"unidades mantidas", empenhado:16900000, liquidado:14210000, pago:13480000, conf:93},
+      {cod:"1032", nome:"Construção e ampliação de UBS", metaFinanceira:12000000, metaFisica:8, realizado:5, unid:"unidades entregues", empenhado:11430000, liquidado:6820000, pago:6100000, conf:88},
+      {cod:"2150", nome:"Aquisição de medicamentos da atenção básica", metaFinanceira:9500000, metaFisica:1200000, realizado:1145000, unid:"itens adquiridos", empenhado:9120000, liquidado:8730000, pago:8410000, conf:96}
+    ],
+    contratos:[
+      {num:"CT 118/2026", forn:"Construtora Vale Verde Ltda.", objeto:"Construção de 3 unidades básicas de saúde nos bairros Aero Rancho, Nova Lima e Coophavila.", valor:8400000, liquidado:5200000, acao:"1032", aderencia:94, conf:91, ver:"conforme",
+       parecer:"O objeto executa diretamente a expansão da rede prevista no objetivo do programa e está vinculado à ação 1032, cuja meta física é a entrega de unidades.",
+       evid:["Objeto e produto da ação convergem: unidade básica de saúde","Empenhos classificados na funcional 10.301","Medições correspondem às UBS listadas na meta física"]},
+      {num:"CT 204/2026", forn:"MedFarma Distribuidora S.A.", objeto:"Fornecimento parcelado de medicamentos da relação estadual essencial.", valor:6200000, liquidado:5850000, acao:"2150", aderencia:89, conf:94, ver:"conforme",
+       parecer:"O fornecimento atende à garantia de abastecimento citada no objetivo. Ressalva menor: 7% dos itens entregues estão fora da relação essencial informada no termo de referência.",
+       evid:["Itens conferem com a lista da ação 2150","Preços dentro da mediana do banco de preços","7% dos itens sem correspondência na relação essencial"]},
+      {num:"CT 251/2026", forn:"Locadora Sul Veículos", objeto:"Locação de 24 veículos para deslocamento de equipes administrativas da secretaria.", valor:2100000, liquidado:1180000, acao:"2145", aderencia:58, conf:82, ver:"atencao",
+       parecer:"Vínculo indireto. A frota apoia a operação da secretaria, mas o contrato não distingue o uso pelas equipes de atenção primária do uso administrativo geral, o que impede atribuir integralmente o custo ao programa.",
+       evid:["Objeto não menciona atenção primária nem UBS","Sem rateio por unidade ou por equipe no contrato","Diários de bordo não integrados ao sistema"]},
+      {num:"CT 233/2026", forn:"Agência Ponto Alto Comunicação", objeto:"Serviços de publicidade institucional e cerimonial para eventos da pasta.", valor:1900000, liquidado:1640000, acao:"2145", aderencia:31, conf:88, ver:"divergente",
+       parecer:"Não há relação demonstrável entre publicidade institucional e a finalidade de ampliar o acesso à atenção primária. O gasto consome a dotação da ação 2145 sem contribuir para a meta física de unidades mantidas.",
+       evid:["Objeto sem correspondência com o produto da ação","Despesa classificada em ação finalística, não em apoio administrativo","Sem indicador de resultado vinculado ao programa"]}
+    ]
+  },
+  {
+    id:"0034", nome:"Malha Viária Integrada",
+    objetivo:"Recuperar e conservar a malha rodoviária estadual pavimentada, reduzindo o custo de transporte da produção e o tempo de deslocamento entre polos regionais.",
+    valorPPA:126400000, orgao:"Secretaria de Infraestrutura",
+    acoes:[
+      {cod:"1180", nome:"Pavimentação de rodovias estaduais", metaFinanceira:74000000, metaFisica:120, realizado:78, unid:"km pavimentados", empenhado:69800000, liquidado:44600000, pago:41200000, conf:90},
+      {cod:"2201", nome:"Conservação e tapa-buraco", metaFinanceira:28500000, metaFisica:2400, realizado:2180, unid:"km conservados", empenhado:27300000, liquidado:24900000, pago:23800000, conf:92},
+      {cod:"2210", nome:"Sinalização viária", metaFinanceira:9800000, metaFisica:640, realizado:512, unid:"km sinalizados", empenhado:8900000, liquidado:7100000, pago:6800000, conf:87}
+    ],
+    contratos:[
+      {num:"CT 077/2026", forn:"Engenharia Pantanal S.A.", objeto:"Pavimentação asfáltica de 46 km no trecho MS-134 entre Nova Andradina e Bataguassu.", valor:31200000, liquidado:19800000, acao:"1180", aderencia:96, conf:93, ver:"conforme",
+       parecer:"Objeto idêntico ao produto da ação e à finalidade do programa, com medições vinculadas a quilômetros entregues.",
+       evid:["Trecho consta no plano de obras do programa","Medições em km, mesma unidade da meta física","Custo por km dentro da referência SICRO"]},
+      {num:"CT 090/2026", forn:"Sinaltec Engenharia", objeto:"Implantação de sinalização horizontal e vertical em 210 km de rodovias estaduais.", valor:5400000, liquidado:4100000, acao:"2210", aderencia:91, conf:90, ver:"conforme",
+       parecer:"Sinalização integra a conservação da malha e responde diretamente à meta física da ação 2210.",
+       evid:["Unidade de medição compatível com a meta","Trechos coincidem com os da ação 2201"]},
+      {num:"CT 112/2026", forn:"Consultoria Horizonte Gestão", objeto:"Assessoria em gestão estratégica e elaboração de relatórios gerenciais para a diretoria.", valor:3300000, liquidado:2450000, acao:"2201", aderencia:44, conf:85, ver:"atencao",
+       parecer:"Serviço de apoio à gestão sem produto físico associado à conservação da malha. Enquadramento mais adequado seria ação de apoio administrativo, não ação finalística.",
+       evid:["Produtos entregues são relatórios, não km conservados","Sem métrica vinculada ao indicador do programa"]}
+    ]
+  },
+  {
+    id:"0047", nome:"Educação Conectada",
+    objetivo:"Assegurar conectividade de banda larga e equipamentos adequados em todas as escolas da rede estadual, ampliando o uso pedagógico de tecnologias digitais.",
+    valorPPA:37900000, orgao:"Secretaria de Estado de Educação",
+    acoes:[
+      {cod:"2310", nome:"Contratação de link dedicado para escolas", metaFinanceira:14200000, metaFisica:410, realizado:389, unid:"escolas conectadas", empenhado:13800000, liquidado:12950000, pago:12400000, conf:95},
+      {cod:"1245", nome:"Aquisição de equipamentos de informática", metaFinanceira:16800000, metaFisica:9500, realizado:7200, unid:"equipamentos entregues", empenhado:15900000, liquidado:10450000, pago:9700000, conf:89},
+      {cod:"2318", nome:"Formação de professores em tecnologias digitais", metaFinanceira:4300000, metaFisica:6000, realizado:4850, unid:"professores formados", empenhado:3980000, liquidado:3210000, pago:3050000, conf:84}
+    ],
+    contratos:[
+      {num:"CT 305/2026", forn:"NetSul Telecom", objeto:"Provimento de link dedicado de 200 Mbps para 389 escolas da rede estadual.", valor:13100000, liquidado:12300000, acao:"2310", aderencia:97, conf:95, ver:"conforme",
+       parecer:"Objeto é exatamente o produto da ação e o núcleo do objetivo do programa. Faturamento por escola conectada permite conciliação direta com a meta física.",
+       evid:["Uma fatura por escola, conciliável com a meta","Cobertura de 389 das 410 escolas previstas"]},
+      {num:"CT 288/2026", forn:"InfoTech Suprimentos Ltda.", objeto:"Fornecimento de 7.200 notebooks educacionais e 480 projetores interativos.", valor:11400000, liquidado:9900000, acao:"1245", aderencia:93, conf:92, ver:"conforme",
+       parecer:"Equipamentos correspondem ao produto da ação. Entrega parcial explica a diferença entre meta física prevista e realizada.",
+       evid:["Notas fiscais com número de série conciliado","Entrega de 7.200 de 9.500 itens previstos"]},
+      {num:"CT 296/2026", forn:"Eventos Capital Produções", objeto:"Organização de solenidades de lançamento e locação de estrutura para cerimônias.", valor:1450000, liquidado:1120000, acao:"2318", aderencia:27, conf:90, ver:"divergente",
+       parecer:"Cerimonial não produz formação de professores nem conectividade. A despesa reduz a dotação da ação 2318 sem gerar produto previsto no programa.",
+       evid:["Objeto sem relação com o produto da ação","Nenhum professor formado vinculado ao contrato","Classificação em ação finalística indevida"]}
+    ]
+  }
+];
+
+const brl = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+const brlP = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:2,maximumFractionDigits:2});
+const n0 = v => v.toLocaleString("pt-BR",{maximumFractionDigits:0});
+const pct = v => v.toLocaleString("pt-BR",{maximumFractionDigits:1}) + "%";
+const escala = v => {
+  const a = Math.abs(v);
+  if(a >= 1e9) return {n:(v/1e9).toLocaleString("pt-BR",{maximumFractionDigits:2}), u:"bi"};
+  if(a >= 1e6) return {n:(v/1e6).toLocaleString("pt-BR",{maximumFractionDigits:1}), u:"mi"};
+  if(a >= 1e3) return {n:(v/1e3).toLocaleString("pt-BR",{maximumFractionDigits:0}), u:"mil"};
+  return {n:v.toLocaleString("pt-BR",{maximumFractionDigits:0}), u:""};
+};
+// número grande do cartão: cifrão discreto, valor destacado, unidade em escala menor
+const brlKpi = v => { const e = escala(v); return `<span class="cif">R$</span>${e.n}${e.u ? `<span class="un">${e.u}</span>` : ""}`; };
+// versão em texto puro, para notas e atributos title
+const brlT = v => { const e = escala(v); return ("R$ " + e.n + " " + e.u).trim(); };
+
+let progAtual = dados[0];
+let filtroVer = "todos";
+
+const sel = document.getElementById("selProg");
+dados.forEach(p => {
+  const o = document.createElement("option");
+  o.value = p.id; o.textContent = p.id + " — " + p.nome;
+  sel.appendChild(o);
+});
+sel.addEventListener("change", () => {
+  progAtual = dados.find(p => p.id === sel.value);
+  render();
+});
+
+document.querySelectorAll("[data-alvo]").forEach(el => {
+  const ir = () => document.getElementById(el.dataset.alvo)
+    .scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+  el.addEventListener("click", ir);
+  el.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " ") { e.preventDefault(); ir(); }});
+});
+
+document.getElementById("filtros").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return;
+  filtroVer = b.dataset.ver;
+  document.querySelectorAll("#filtros button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  renderContratos();
+});
+
+function totais(p){
+  const t = {metaFinanceira:0, empenhado:0, liquidado:0, pago:0};
+  p.acoes.forEach(a => { t.metaFinanceira += a.metaFinanceira; t.empenhado += a.empenhado; t.liquidado += a.liquidado; t.pago += a.pago; });
+  t.contratado = p.contratos.reduce((s,c) => s + c.valor, 0);
+  t.liqContratos = p.contratos.reduce((s,c) => s + c.liquidado, 0);
+  t.aderenciaMedia = p.contratos.reduce((s,c) => s + c.aderencia * c.valor, 0) / t.contratado;
+  t.emRisco = p.contratos.filter(c => c.ver !== "conforme").reduce((s,c) => s + c.liquidado, 0);
+  return t;
+}
+
+function renderKpis(){
+  const t = totais(progAtual);
+  const exec = t.liquidado / t.metaFinanceira * 100;
+  const conf = Math.round(progAtual.acoes.reduce((s,a)=>s+a.conf,0)/progAtual.acoes.length);
+  document.getElementById("kpis").innerHTML = `
+    <div class="kpi">
+      <div class="rot">Meta financeira do programa</div>
+      <div class="val" title="${brl(t.metaFinanceira)}">${brlKpi(t.metaFinanceira)}</div>
+      <div class="exato">${brl(t.metaFinanceira)}</div>
+      <div class="nota">${progAtual.acoes.length} ações · PPA total ${brlT(progAtual.valorPPA)}</div>
+    </div>
+    <div class="kpi">
+      <div class="rot">Liquidado no exercício</div>
+      <div class="val" title="${brl(t.liquidado)}">${brlKpi(t.liquidado)}</div>
+      <div class="exato">${brl(t.liquidado)}</div>
+      <div class="nota">${pct(exec)} da meta financeira · empenhado ${brlT(t.empenhado)}</div>
+    </div>
+    <div class="kpi ia">
+      <div class="rot">Custo apurado pela IA</div>
+      <div class="val" title="${brl(t.liquidado)}">${brlKpi(t.liquidado)}</div>
+      <div class="exato">${brl(t.liquidado)}</div>
+      <div class="nota"><span class="selo-ia">IA</span> ${progAtual.acoes.length} metas físicas conciliadas · confiança ${conf}%</div>
+    </div>
+    <div class="kpi ia">
+      <div class="rot">Aderência contratual média</div>
+      <div class="val">${Math.round(t.aderenciaMedia)}<span class="un">%</span></div>
+      <div class="exato">ponderada por valor</div>
+      <div class="nota"><span class="selo-ia">IA</span> ${brlT(t.emRisco)} liquidados em contratos com ressalva</div>
+    </div>`;
+}
+
+function renderPPA(){
+  document.getElementById("ppaObjetivo").innerHTML = `
+    <div class="prog-obj">
+      <b>Objetivo do programa ${progAtual.id}</b>
+      ${progAtual.objetivo}
+    </div>
+    <div class="meta-linha" style="margin-top:0">
+      <span>Órgão: <b>${progAtual.orgao}</b></span>
+      <span>Valor no PPA: <b>${brl(progAtual.valorPPA)}</b></span>
+      <span>Ações: <b>${progAtual.acoes.length}</b></span>
+    </div>
+    <p style="font-size:12px;color:var(--tinta-40);margin:16px 0 0">
+      Este texto é a referência usada na Fase 4: cada objeto contratual é confrontado com ele.
+    </p>`;
+
+  document.getElementById("ppaAcoes").innerHTML =
+    `<div class="rot" style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-40);margin-bottom:8px">Ações, metas físicas e financeiras</div>` +
+    progAtual.acoes.map(a => `
+      <div class="acao">
+        <div class="acao-cab">
+          <div>
+            <div class="cod">AÇÃO ${a.cod}</div>
+            <div class="nome">${a.nome}</div>
+          </div>
+          <div class="meta-valor">${brl(a.metaFinanceira)}</div>
+        </div>
+        <div class="meta-linha">
+          <span>Meta física: <b>${n0(a.metaFisica)}</b> ${a.unid}</span>
+          <span>Custo unitário previsto: <b>${brlP(a.metaFinanceira / a.metaFisica)}</b></span>
+        </div>
+      </div>`).join("");
+}
+
+function renderExecucao(){
+  const t = totais(progAtual);
+  const teto = Math.max(...progAtual.acoes.map(a => a.metaFinanceira));
+  document.getElementById("execucao").innerHTML =
+    progAtual.acoes.map(a => `
+      <div class="acao">
+        <div class="acao-cab">
+          <div><div class="cod">AÇÃO ${a.cod}</div><div class="nome">${a.nome}</div></div>
+          <div class="meta-valor">${pct(a.liquidado / a.metaFinanceira * 100)}<span style="font-size:11px;color:var(--tinta-40);font-weight:400"> liquidado</span></div>
+        </div>
+        <div class="barra-bloco">
+          <div class="barra" style="width:${a.metaFinanceira / teto * 100}%">
+            <i class="emp" style="width:${a.empenhado / a.metaFinanceira * 100}%"></i>
+            <i class="liq" style="width:${a.liquidado / a.metaFinanceira * 100}%"></i>
+          </div>
+          <div class="barra-leg">
+            <span><i class="chave" style="background:var(--nevoa);border:1px solid var(--linha-forte)"></i>Meta ${brl(a.metaFinanceira)}</span>
+            <span><i class="chave" style="background:var(--linha-forte)"></i>Empenhado ${brl(a.empenhado)}</span>
+            <span><i class="chave" style="background:var(--selo)"></i>Liquidado ${brl(a.liquidado)}</span>
+            <span>Pago ${brl(a.pago)}</span>
+          </div>
+        </div>
+      </div>`).join("") +
+    `<div class="meta-linha" style="margin-top:14px;border-top:2px solid var(--tinta);padding-top:10px">
+       <span>Total empenhado: <b>${brl(t.empenhado)}</b></span>
+       <span>Total liquidado: <b>${brl(t.liquidado)}</b></span>
+       <span>Liquidado a pagar: <b>${brl(t.liquidado - t.pago)}</b></span>
+     </div>`;
+}
+
+function renderCustos(){
+  const t = totais(progAtual);
+  let somaDesvio = 0;
+  const linhas = progAtual.acoes.map(a => {
+    const prev = a.metaFinanceira / a.metaFisica;
+    const real = a.liquidado / a.realizado;
+    const desvio = (real / prev - 1) * 100;
+    somaDesvio += desvio;
+    const cls = desvio > 0 ? "desvio-pos" : "desvio-neg";
+    return `<tr>
+      <td class="esq"><span class="mono" style="color:var(--tinta-40);font-size:11px">${a.cod}</span><br>${a.nome}</td>
+      <td class="mono">${brl(a.metaFinanceira)}</td>
+      <td class="mono">${brl(a.liquidado)}</td>
+      <td class="mono">${pct(a.liquidado / a.metaFinanceira * 100)}</td>
+      <td class="mono">${n0(a.metaFisica)}</td>
+      <td class="mono"><span class="ia-marca">${n0(a.realizado)}</span></td>
+      <td class="mono">${brlP(prev)}</td>
+      <td class="mono"><span class="ia-marca">${brlP(real)}</span></td>
+      <td class="mono ${cls}">${desvio > 0 ? "+" : ""}${pct(desvio)}</td>
+      <td><span class="selo-ia">${a.conf}%</span></td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("custos").innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Ação</th><th>Meta financeira</th><th>Liquidado</th><th>Execução</th>
+        <th>Meta física</th><th>Realizado</th><th>Custo unit. previsto</th>
+        <th>Custo unit. apurado</th><th>Desvio</th><th>Confiança</th>
+      </tr></thead>
+      <tbody>${linhas}</tbody>
+      <tfoot><tr>
+        <td class="esq">Custo total do programa ${progAtual.id}</td>
+        <td class="mono">${brl(t.metaFinanceira)}</td>
+        <td class="mono">${brl(t.liquidado)}</td>
+        <td class="mono">${pct(t.liquidado / t.metaFinanceira * 100)}</td>
+        <td colspan="4"></td>
+        <td class="mono ${somaDesvio > 0 ? "desvio-pos" : "desvio-neg"}">${somaDesvio > 0 ? "+" : ""}${pct(somaDesvio / progAtual.acoes.length)}</td>
+        <td></td>
+      </tr></tfoot>
+    </table>
+    <p style="font-size:12px;color:var(--tinta-40);margin:12px 0 0">
+      Desvio positivo indica que cada unidade entregue custou mais que o previsto no planejamento. O realizado é reconstruído pela IA a partir de medições, notas de liquidação e relatórios de entrega.
+    </p>`;
+}
+
+function renderContratos(){
+  const lista = progAtual.contratos.filter(c => filtroVer === "todos" || c.ver === filtroVer);
+  const alvo = document.getElementById("contratos");
+  if(!lista.length){
+    alvo.innerHTML = `<div class="painel" style="grid-column:1/-1">Nenhum contrato deste programa recebeu essa classificação. Escolha outro filtro para ver os demais.</div>`;
+    return;
+  }
+  const rotulo = {conforme:"Atende à finalidade", atencao:"Vínculo indireto", divergente:"Fora da finalidade"};
+  alvo.innerHTML = lista.map((c,i) => `
+    <article class="ct ${c.ver}" id="ct${i}">
+      <div class="ct-cab">
+        <div>
+          <div class="numero">${c.num} · AÇÃO ${c.acao}</div>
+          <div class="forn">${c.forn}</div>
+        </div>
+        <div class="mono" style="text-align:right;font-size:13px">
+          ${brl(c.valor)}<br><span style="color:var(--tinta-40);font-size:11px">liq. ${brl(c.liquidado)}</span>
+        </div>
+      </div>
+      <p class="objeto">${c.objeto}</p>
+      <div class="medidor">
+        <div class="trilho"><i style="width:${c.aderencia}%"></i></div>
+        <span class="pct">${c.aderencia}%</span>
+      </div>
+      <div class="ct-rod">
+        <span class="etiq ${c.ver}">${rotulo[c.ver]}</span>
+        <span class="selo-ia">IA · confiança ${c.conf}%</span>
+        <button class="abrir" data-ct="${i}" aria-expanded="false">Ver parecer</button>
+      </div>
+      <div class="parecer">
+        <div class="confronto">
+          <div><b>Objeto contratado</b>${c.objeto}</div>
+          <div><b>Objetivo do programa</b>${progAtual.objetivo}</div>
+        </div>
+        <h4>Análise da IA</h4>
+        <p>${c.parecer}</p>
+        <h4>Evidências consideradas</h4>
+        <ul>${c.evid.map(e => `<li>${e}</li>`).join("")}</ul>
+      </div>
+    </article>`).join("");
+
+  alvo.querySelectorAll("button.abrir").forEach(b => {
+    b.addEventListener("click", () => {
+      const card = b.closest(".ct");
+      const aberto = card.classList.toggle("aberto");
+      b.textContent = aberto ? "Ocultar parecer" : "Ver parecer";
+      b.setAttribute("aria-expanded", String(aberto));
+    });
+  });
+}
+
+function render(){ renderKpis(); renderPPA(); renderExecucao(); renderCustos(); renderContratos(); }
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel PPA × LDO × LOA × Execução</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#151A21; --tinta-70:#4A535F; --tinta-40:#8A93A0;
+  --linha:#D8DCE2; --linha-forte:#B9C0C9; --nevoa:#EBEEF1; --carta:#FFFFFF;
+  --selo:#1F5E5B; --selo-luz:#E4EFEC;
+  --alerta:#B4670F; --alerta-luz:#F8EEDF;
+  --diverg:#9E2A3C; --diverg-luz:#F7E7E9;
+  --ia:#4B3FA8; --ia-luz:#ECEAF8;
+  --vazio:#F4F6F8;
+  --r:4px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--nevoa);color:var(--tinta);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;margin:0;letter-spacing:-.01em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ia);outline-offset:2px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+/* cabeçalho */
+.topo{background:var(--tinta);color:#fff;padding:16px 22px;position:sticky;top:0;z-index:30;border-bottom:3px solid var(--ia)}
+.int{max-width:1400px;margin:0 auto}
+.topo-linha{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between}
+.marca h1{font-size:21px;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.marca .sub{font-size:11px;color:#9AA4B2;font-family:"IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;display:block;margin-top:3px}
+.acoes-topo{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bt{background:#232A34;border:1px solid #39424F;color:#D6DCE4;border-radius:var(--r);padding:8px 12px;font-size:12.5px;cursor:pointer}
+.bt:hover{background:#2C3540}
+.bt.forte{background:#fff;color:var(--tinta);border-color:#fff;font-weight:600}
+.sel-ex{background:#232A34;border:1px solid #39424F;color:#fff;border-radius:var(--r);padding:7px 10px;font-size:13px}
+label.campo{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#8A93A0;display:block;margin-bottom:3px}
+
+/* faixa de carga */
+.carga{background:var(--carta);border-bottom:1px solid var(--linha);padding:14px 22px}
+.fontes{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px}
+.fontes-tit{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.fontes-tit b{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--tinta-70)}
+.fontes-tit span{font-size:12.5px;color:var(--tinta-70)}
+.fonte{border:1px solid var(--linha);border-radius:var(--r);padding:9px 12px;background:#FBFCFD}
+.fonte.ok{background:var(--carta);border-color:#BBD8D2}
+.fonte.raiz{background:#EEF1F7;border:1px solid #B9C3D8;border-left:4px solid var(--tinta);box-shadow:0 1px 3px rgba(21,26,33,.08)}
+.fonte.raiz .nm{color:var(--tinta);font-weight:600}
+.fonte.raiz .st{font-size:15px}
+.fonte.raiz .qt{color:var(--tinta-70);font-weight:500}
+.fonte .nm{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-40)}
+.fonte .st{font-size:14px;font-weight:600;margin-top:3px}
+.fonte.ok .st{color:var(--selo)}
+.fonte .qt{font-size:11.5px;color:var(--tinta-40);margin-top:1px}
+.fonte .rec{font-size:11px;color:var(--ia);margin-top:4px;padding-top:4px;border-top:1px dashed var(--linha)}
+.aviso-foco{grid-column:1/-1;font-size:12.5px;color:var(--tinta-70);background:var(--ia-luz);border:1px solid #C9C2EE;border-radius:var(--r);padding:8px 12px;margin-bottom:2px}
+
+/* aviso de exemplo */
+.faixa-exemplo{background:var(--alerta-luz);border-bottom:1px solid #E7CFA6;padding:9px 22px;font-size:13px;display:none}
+body.exemplo .faixa-exemplo{display:block}
+.faixa-exemplo b{font-weight:600}
+
+main{max-width:1400px;margin:0 auto;padding:20px 22px 60px}
+section{margin-bottom:26px}
+.cab-secao{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--tinta);padding-bottom:7px;margin-bottom:14px}
+.cab-secao .fase{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;background:var(--tinta);color:#fff;padding:3px 7px;border-radius:2px}
+.cab-secao .fase.ia{background:var(--ia)}
+.cab-secao h2{font-size:21px}
+.cab-secao p{margin:0;font-size:13px;color:var(--tinta-70);flex:1 1 260px}
+
+.painel{background:var(--carta);border:1px solid var(--linha);border-radius:var(--r);padding:16px 18px}
+.rolagem{overflow-x:auto}
+#tabelaMatriz table{min-width:1380px}
+#tabelaMatriz th:first-child,#tabelaMatriz td.esq{min-width:300px}
+
+/* estado vazio */
+.aguarda{background:var(--carta);border:1px dashed var(--linha-forte);border-radius:var(--r);padding:22px;text-align:center;color:var(--tinta-70)}
+.aguarda .ic{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-40);margin-bottom:6px}
+.aguarda h4{font-size:16px;margin-bottom:5px}
+.aguarda p{margin:0;font-size:13.5px;max-width:64ch;margin-inline:auto}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-40);font-weight:500;padding:0 8px 7px;border-bottom:1px solid var(--linha);white-space:nowrap}
+th.esq,td.esq{text-align:left}
+td{padding:8px;border-bottom:1px solid var(--nevoa);text-align:right;vertical-align:top}
+tbody tr:hover{background:#FAFBFC}
+tfoot td{border-top:2px solid var(--tinta);border-bottom:0;font-weight:600;padding-top:9px}
+td.vaz{color:var(--tinta-40)}
+.cod-lin{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--tinta-40)}
+.cod-lin .reg{margin-left:6px;padding:1px 5px;border:1px solid var(--linha);border-radius:2px;color:var(--tinta-40);font-size:9.5px;cursor:help}
+
+/* etiquetas de vínculo */
+.et{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.05em;padding:2px 6px;border-radius:2px;white-space:nowrap;display:inline-block}
+.et.ok{background:var(--selo-luz);color:var(--selo)}
+.et.atencao{background:var(--alerta-luz);color:var(--alerta)}
+.et.diverg{background:var(--diverg-luz);color:var(--diverg)}
+.et.neutro{background:var(--nevoa);color:var(--tinta-40)}
+
+/* qualidade */
+.medidores{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:14px}
+.med{background:var(--carta);border:1px solid var(--linha);border-top:3px solid var(--tinta);border-radius:var(--r);padding:13px 15px}
+.med .rot{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-40)}
+.med .val{font-family:"IBM Plex Mono",monospace;font-size:24px;font-weight:600;margin-top:5px;line-height:1.15;white-space:nowrap}
+.med .val .un{font-size:.55em;font-weight:500;color:var(--tinta-40);margin-left:3px}
+.med .val .cif{font-size:.6em;font-weight:500;color:var(--tinta-40);margin-right:4px}
+.med .nota{font-size:12px;color:var(--tinta-70);margin-top:4px}
+.med.pendente{border-top-color:var(--linha-forte);background:var(--vazio)}
+.med.pendente .val{color:var(--tinta-40)}
+
+ul.excecoes{list-style:none;margin:0;padding:0}
+ul.excecoes li{position:relative;padding:0 0 7px 18px;font-size:13.5px}
+ul.excecoes li::before{content:"";position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--alerta)}
+ul.excecoes li.grave::before{background:var(--diverg)}
+
+/* programa */
+.prog{border:1px solid var(--linha);border-radius:var(--r);margin-bottom:10px;background:var(--carta)}
+.prog-cab{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:13px 16px;cursor:pointer}
+.prog-cab:hover{background:#FAFBFC}
+.prog-cab .cod{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--tinta-40);letter-spacing:.06em}
+.prog-cab h3{font-size:17px;margin-top:2px}
+.prog-cab .dir{text-align:right;white-space:nowrap}
+.prog-corpo{display:none;padding:0 16px 14px;border-top:1px solid var(--nevoa)}
+.prog.aberto .prog-corpo{display:block}
+.prog .obj{font-size:13.5px;color:var(--tinta-70);margin:12px 0;max-width:90ch}
+.prog .obj b{color:var(--tinta);font-weight:600}
+
+footer{max-width:1400px;margin:0 auto;padding:0 22px 44px;font-size:12.5px;color:var(--tinta-40);line-height:1.6}
+.esconde{display:none}
+.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:900px){.tres{grid-template-columns:1fr}}
+@media(max-width:820px){.par-ex{grid-template-columns:1fr !important}}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="int topo-linha">
+    <div class="marca">
+      <h1 id="municipio">Município</h1>
+      <span class="sub" id="subtitulo">PPA × LDO × LOA × Execução — aguardando carga de dados</span>
+    </div>
+    <div class="acoes-topo">
+      <div>
+        <label class="campo" for="exercicio">Exercício</label>
+        <select class="sel-ex" id="exercicio"></select>
+      </div>
+      <div>
+        <label class="campo" for="foco">Programa</label>
+        <select class="sel-ex" id="foco"></select>
+      </div>
+      <button class="bt forte" id="btCarregar">Carregar dados (JSON)</button>
+      <button class="bt" id="btModelo">Baixar modelo</button>
+      <button class="bt" id="btExemplo">Ver com dados de exemplo</button>
+      <input type="file" id="arquivo" accept="application/json,.json" class="esconde">
+    </div>
+  </div>
+</header>
+
+<div class="faixa-exemplo">
+  <b>Dados de exemplo.</b> O que está na tela é fictício, apenas para mostrar o comportamento do painel.
+  Carregue o JSON do município para substituir.
+</div>
+
+<div class="carga">
+  <div class="int">
+    <div class="fontes" id="fontes"></div>
+  </div>
+</div>
+
+<main>
+  <section id="qualidade">
+    <div class="cab-secao">
+      <span class="fase">CONCILIAÇÃO</span>
+      <h2>Cobertura do vínculo</h2>
+      <p>Quanto do plano encontrou correspondência na lei orçamentária e na execução. Divergência aqui invalida qualquer número adiante.</p>
+    </div>
+    <div class="medidores" id="medidores"></div>
+    <div class="painel" id="excecoes"></div>
+  </section>
+
+  <section id="confronto">
+    <div class="cab-secao">
+      <span class="fase">LEI × REMESSA</span>
+      <h2>O que a lei promete e o que a remessa registra</h2>
+      <p>A meta física enviada ao controle externo deveria espelhar a meta declarada na lei. Quando não espelha, a entrega deixa de ser mensurável — o dinheiro continua rastreável, a promessa não.</p>
+    </div>
+    <div id="blocoConfronto"></div>
+  </section>
+
+  <section id="matriz">
+    <div class="cab-secao">
+      <span class="fase">CRUZAMENTO</span>
+      <h2>Matriz programa × ação × dotação × execução</h2>
+      <p>Uma linha por ação, do PPA até a liquidação. Colunas sem dado ficam explicitamente vazias — nada é estimado.</p>
+    </div>
+    <div class="painel rolagem" id="tabelaMatriz"></div>
+  </section>
+
+  <section id="fase1">
+    <div class="cab-secao">
+      <span class="fase">FASE 1</span>
+      <h2>PPA — programas e ações</h2>
+      <p>Objetivo, público-alvo e ações de cada programa, com meta física e meta financeira por exercício.</p>
+    </div>
+    <div id="listaProgramas"></div>
+  </section>
+
+  <section id="fase2">
+    <div class="cab-secao">
+      <span class="fase">FASE 2</span>
+      <h2>LDO — prioridades do exercício</h2>
+      <p>Quais ações do PPA foram eleitas prioridade para o exercício, e o que ficou de fora.</p>
+    </div>
+    <div id="blocoLdo"></div>
+  </section>
+
+  <section id="fase3">
+    <div class="cab-secao">
+      <span class="fase">FASE 3</span>
+      <h2>LOA — dotação autorizada</h2>
+      <p>Dotação por ação, confrontada com a meta financeira prevista no PPA. A coluna atualizada só difere da inicial quando a remessa de alteração orçamentária for carregada.</p>
+    </div>
+    <div id="blocoLoa"></div>
+  </section>
+
+  <section id="fase4">
+    <div class="cab-secao">
+      <span class="fase">FASE 4</span>
+      <h2>Execução — empenho e liquidação</h2>
+      <p>A liquidação é o marco do custo: despesa reconhecida após a verificação do direito do credor.</p>
+    </div>
+    <div id="blocoExec"></div>
+  </section>
+
+  <section id="regua">
+    <div class="cab-secao">
+      <span class="fase ia">FASE 4 · PREPARAÇÃO</span>
+      <h2>A régua contra a qual o contrato será medido</h2>
+      <p>Antes de comparar contratos, é preciso saber se o programa declara com clareza o que pretende e para quem. Régua incompleta produz análise inconclusiva, por melhor que seja o método.</p>
+    </div>
+    <div id="blocoRegua"></div>
+  </section>
+
+  <section id="fase5">
+    <div class="cab-secao">
+      <span class="fase ia">FASE 5 · IA</span>
+      <h2>Contratos e aderência à finalidade</h2>
+      <p>Objeto contratado confrontado com o objetivo do programa que custeia o contrato.</p>
+    </div>
+    <div id="blocoContratos"></div>
+  </section>
+</main>
+
+<footer>
+  <b id="rodapeMunicipio">Painel de trabalho.</b> Vincula planejamento, orçamento e execução.
+  Os dados exibidos são os do arquivo carregado; nenhum valor é estimado pelo painel.
+  Campos ausentes aparecem como lacuna, nunca como zero.<br>
+  <b>Sobre os códigos.</b> O número em destaque é o código orçamentário da ação, como aparece na lei. O selo "reg." traz os códigos de registro da remessa do Esfinge — programa e ação —, que são a chave usada para ligar PPA, LDO e LOA. As remessas não trazem o código orçamentário do programa.
+</footer>
+
+<script>
+/* =========================================================================
+   ESTRUTURA DE DADOS
+   Substitua carregando um JSON com este formato (botão "Baixar modelo").
+   Chaves de ligação: código do programa + código da ação.
+   ========================================================================= */
+const VAZIO = {
+  municipio:"", uf:"", 
+  ppa:{ vigencia:"", lei:"", programas:[] },
+  ldo:{ exercicio:null, lei:"", prioridades:[] },
+  loa:{ exercicio:null, lei:"", dotacoes:[] },
+  execucao:{ empenhos:[], liquidacoes:[], pagamentos:[] },
+  contratos:[]
+};
+
+const MODELO = {
+  municipio:"Água Clara", uf:"MS",
+  ppa:{
+    vigencia:"2026-2029", lei:"Lei municipal nº ___/____",
+    programas:[{
+      cod:"0001", nome:"Nome do programa", objetivo:"Texto do objetivo, como consta na lei.",
+      finalidade:"Texto da finalidade.", publico:"Público-alvo declarado.", orgao:"Secretaria responsável",
+      acoes:[{
+        cod:"1001", nome:"Nome da ação", produto:"O que a ação entrega", unidade:"unidade de medida",
+        metaFisica:{"2026":0,"2027":0,"2028":0,"2029":0},
+        metaFinanceira:{"2026":0,"2027":0,"2028":0,"2029":0},
+        // avaliação feita uma única vez por ação, antes dos contratos
+        aderenciaProduto:{ classificacao:"", justificativa:"" }
+      }]
+    }]
+  },
+  ldo:{
+    exercicio:2026, lei:"Lei municipal nº ___/____",
+    prioridades:[{ programa:"0001", acao:"1001", metaFisica:0, metaFinanceira:0, observacao:"" }]
+  },
+  loa:{
+    exercicio:2026, lei:"Lei municipal nº ___/____",
+    dotacoes:[{
+      programa:"0001", acao:"1001", unidadeGestora:"", funcionalProgramatica:"",
+      fonte:"", naturezaDespesa:"", dotacaoInicial:0, dotacaoAtualizada:0
+    }]
+  },
+  execucao:{
+    empenhos:[{ numero:"", data:"2026-01-01", programa:"0001", acao:"1001", credor:"", cnpj:"", contrato:"", valor:0, situacao:"ativo" }],
+    liquidacoes:[{ numero:"", data:"2026-01-01", empenho:"", programa:"0001", acao:"1001", valor:0, quantidade:null, unidade:"", documento:"", descricao:"", restosAPagar:false }]
+  },
+  contratos:[{
+    numero:"", objeto:"", justificativa:"", fornecedor:"", cnpj:"", valorGlobal:0,
+    vigenciaInicio:"", vigenciaFim:"", programa:"0001", acao:"1001", aditivos:[],
+    // preenchidos pela análise de aderência; deixe em branco para o painel marcar "aguardando análise"
+    naturezaDespesa:"",
+    // a classificação por item é o que torna a saída acionável em contratos mistos
+    itens:[{ descricao:"", valor:0, classificacao:"" }],
+    classificacao:"", parecer:"", trechos:[], confianca:null, contribuicao:"",
+    revisaoHumana:{decisao:"", responsavel:"", data:""}
+  }]
+};
+
+const EXEMPLO = {
+  municipio:"Água Clara", uf:"MS",
+  ppa:{ vigencia:"2026-2029", lei:"Exemplo — não corresponde à lei real",
+    programas:[
+      { cod:"0012", nome:"Atenção Básica em Saúde", objetivo:"Ampliar e qualificar o acesso da população à atenção primária.",
+        finalidade:"Garantir atendimento básico resolutivo em todo o território municipal.", publico:"População residente no município",
+        orgao:"Secretaria Municipal de Saúde",
+        acoes:[
+          { cod:"2015", nome:"Manutenção das unidades básicas de saúde", produto:"Unidade mantida", unidade:"unidade",
+            metaFisica:{"2026":8}, metaFinanceira:{"2026":6200000} },
+          { cod:"2018", nome:"Ampliação da cobertura da estratégia de saúde da família", produto:"Equipe implantada", unidade:"equipe",
+            metaFisica:{"2026":3}, metaFinanceira:{"2026":2400000} }
+        ]},
+      { cod:"0021", nome:"Infraestrutura Urbana", objetivo:"Melhorar a mobilidade e a drenagem nas áreas urbanas consolidadas.",
+        finalidade:"Reduzir pontos de alagamento e ampliar vias pavimentadas.", publico:"Moradores da zona urbana",
+        orgao:"Secretaria Municipal de Obras",
+        acoes:[
+          { cod:"1042", nome:"Pavimentação asfáltica de vias urbanas", produto:"Via pavimentada", unidade:"km",
+            metaFisica:{"2026":12}, metaFinanceira:{"2026":9800000} },
+          { cod:"1047", nome:"Construção de galerias de drenagem", produto:"Rede implantada", unidade:"m",
+            metaFisica:{"2026":2500}, metaFinanceira:{"2026":3100000} }
+        ]}
+    ]},
+  ldo:{ exercicio:2026, lei:"Exemplo",
+    prioridades:[
+      { programa:"0012", acao:"2015", metaFisica:8, metaFinanceira:6200000, observacao:"" },
+      { programa:"0021", acao:"1042", metaFisica:10, metaFinanceira:8500000, observacao:"Meta reduzida frente ao PPA" }
+    ]},
+  loa:{ exercicio:2026, lei:"Exemplo",
+    dotacoes:[
+      { programa:"0012", acao:"2015", unidadeGestora:"Fundo Municipal de Saúde", fonte:"1500", naturezaDespesa:"3.3.90.39", dotacaoInicial:6200000, dotacaoAtualizada:6450000 },
+      { programa:"0012", acao:"2018", unidadeGestora:"Fundo Municipal de Saúde", fonte:"1600", naturezaDespesa:"3.1.90.11", dotacaoInicial:1900000, dotacaoAtualizada:1900000 },
+      { programa:"0021", acao:"1042", unidadeGestora:"Secretaria de Obras", fonte:"1500", naturezaDespesa:"4.4.90.51", dotacaoInicial:8500000, dotacaoAtualizada:9100000 },
+      { programa:"0021", acao:"1055", unidadeGestora:"Secretaria de Obras", fonte:"1700", naturezaDespesa:"4.4.90.51", dotacaoInicial:1200000, dotacaoAtualizada:1200000 }
+    ]},
+  execucao:{ empenhos:[], liquidacoes:[] },
+  contratos:[]
+};
+
+/* ========================= utilidades ========================= */
+const brl  = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+const brlP = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:2,maximumFractionDigits:2});
+const n0   = v => v.toLocaleString("pt-BR",{maximumFractionDigits:0});
+const pct  = v => v.toLocaleString("pt-BR",{maximumFractionDigits:1}) + "%";
+const escala = v => {
+  const a = Math.abs(v);
+  if(a >= 1e9) return {n:(v/1e9).toLocaleString("pt-BR",{maximumFractionDigits:2}), u:"bi"};
+  if(a >= 1e6) return {n:(v/1e6).toLocaleString("pt-BR",{maximumFractionDigits:1}), u:"mi"};
+  if(a >= 1e3) return {n:(v/1e3).toLocaleString("pt-BR",{maximumFractionDigits:0}), u:"mil"};
+  return {n:v.toLocaleString("pt-BR",{maximumFractionDigits:0}), u:""};
+};
+const brlKpi = v => { const e = escala(v); return `<span class="cif">R$</span>${e.n}${e.u?`<span class="un">${e.u}</span>`:""}`; };
+// versão em texto puro, para notas
+const brlT = v => { const e = escala(v); return ("R$ " + e.n + " " + e.u).trim(); };
+const vaz = '<span class="vaz">—</span>';
+// normaliza código: ignora zeros à esquerda, espaços e pontuação
+const K = c => String(c ?? "").replace(/[^0-9A-Za-z]/g,"").replace(/^0+/,"").toUpperCase();
+const chave = (p,a) => K(p) + "|" + K(a);
+const soma = (arr,f) => arr.reduce((s,x)=>s+(Number(f(x))||0),0);
+const QUADRIENIO = "quadrienio";
+const noQuadrienio = () => exercicio === QUADRIENIO;
+// valor da meta no exercício escolhido; no quadriênio, soma os anos
+const porExercicio = obj => {
+  if(!obj) return undefined;
+  if(!noQuadrienio()) return obj[exercicio];
+  const vals = Object.values(obj).filter(v => v != null);
+  return vals.length ? vals.reduce((a,b)=>a+Number(b||0),0) : undefined;
+};
+// clone simples: mais compatível que structuredClone em navegadores antigos
+const clonar = o => JSON.parse(JSON.stringify(o));
+const plural = (n, sing, plur) => n + " " + (n === 1 ? sing : plur);
+
+let D = clonar(VAZIO);
+let exercicio = null;
+let modoExemplo = false;
+
+/* ========================= modelo de leitura ========================= */
+function exerciciosDisponiveis(){
+  const anos = new Set();
+  D.ppa.programas.forEach(p => p.acoes.forEach(a => {
+    Object.keys(a.metaFinanceira || {}).forEach(y => anos.add(String(y)));
+    Object.keys(a.metaFisica || {}).forEach(y => anos.add(String(y)));
+  }));
+  if(D.ldo.exercicio) anos.add(String(D.ldo.exercicio));
+  if(D.loa.exercicio) anos.add(String(D.loa.exercicio));
+  return [...anos].sort();
+}
+
+// monta uma linha por ação do PPA, cruzando LDO, LOA e execução
+let foco = "todos";
+
+function construirMatriz(){
+  const linhas = [];
+  const y = exercicio;
+
+  const porLdo = new Map();
+  (D.ldo.prioridades||[]).forEach(p => porLdo.set(chave(p.programa,p.acao), p));
+
+  const porLoa = new Map();
+  (D.loa.dotacoes||[]).forEach(d => {
+    const k = chave(d.programa,d.acao);
+    const at = porLoa.get(k) || { dotacaoInicial:0, dotacaoAtualizada:0, itens:[] };
+    at.dotacaoInicial += Number(d.dotacaoInicial)||0;
+    at.dotacaoAtualizada += Number(d.dotacaoAtualizada ?? d.dotacaoInicial)||0;
+    at.itens.push(d);
+    porLoa.set(k, at);
+  });
+
+  // alguns leiautes trazem só o código da ação; o programa vem do próprio PPA
+  const progDaAcao = new Map();
+  D.ppa.programas.forEach(p => (p.acoes||[]).forEach(a => progDaAcao.set(K(a.cod), p.cod)));
+  const chaveExec = r => chave(r.programa || progDaAcao.get(K(r.acao)) || "", r.acao);
+  const porEmp = new Map(), porLiq = new Map(), porPag = new Map();
+  (D.execucao.empenhos||[]).filter(e => (e.situacao||"ativo") !== "cancelado").forEach(e => {
+    const k = chaveExec(e);
+    porEmp.set(k, (porEmp.get(k)||0) + (Number(e.valor)||0));
+  });
+  (D.execucao.pagamentos||[]).forEach(g => {
+    const k = chaveExec(g);
+    porPag.set(k, (porPag.get(k)||0) + (Number(g.valor)||0));
+  });
+  const porQtd = new Map();
+  (D.execucao.liquidacoes||[]).forEach(l => {
+    const k = chaveExec(l);
+    porLiq.set(k, (porLiq.get(k)||0) + (Number(l.valor)||0));
+    // a quantidade vem do documento comprobatório: nota fiscal ou boletim de medição
+    if(l.quantidade !== undefined && l.quantidade !== null && l.quantidade !== "")
+      porQtd.set(k, (porQtd.get(k)||0) + (Number(l.quantidade)||0));
+  });
+
+  const vistosLoa = new Set();
+
+  D.ppa.programas.forEach(p => (p.acoes||[]).forEach(a => {
+    const k = chave(p.cod, a.cod);
+    vistosLoa.add(k);
+    const loa = porLoa.get(k);
+    const ldo = porLdo.get(k);
+    linhas.push({
+      k, origem:"ppa",
+      programa:p.cod, programaNome:p.nome,
+      acao:a.cod, acaoOrc:a.codOrcamentario || "", acaoNome:a.nome, unidade:a.unidade || "",
+      metaFisica: porExercicio(a.metaFisica),
+      metaFinanceira: porExercicio(a.metaFinanceira),
+      ldo: ldo || null,
+      loaInicial: loa ? loa.dotacaoInicial : undefined,
+      loaAtual: loa ? loa.dotacaoAtualizada : undefined,
+      empenhado: porEmp.has(k) ? porEmp.get(k) : undefined,
+      liquidado: porLiq.has(k) ? porLiq.get(k) : undefined,
+      pago: porPag.has(k) ? porPag.get(k) : undefined,
+      qtdLiquidada: porQtd.has(k) ? porQtd.get(k) : undefined
+    });
+  }));
+
+  // dotações da LOA sem correspondência no PPA
+  porLoa.forEach((v,k) => {
+    if(vistosLoa.has(k)) return;
+    const ref = v.itens[0];
+    linhas.push({
+      k, origem:"loa-orfa",
+      programa:ref.programa, programaNome:"(sem programa correspondente no PPA)",
+      acao:ref.acao, acaoOrc:"", acaoNome:ref.nome || "(ação não encontrada no PPA)", unidade:"",
+      metaFisica:undefined, metaFinanceira:undefined, ldo:null,
+      loaInicial:v.dotacaoInicial, loaAtual:v.dotacaoAtualizada,
+      empenhado: porEmp.get(k), liquidado: porLiq.get(k), qtdLiquidada: porQtd.get(k)
+    });
+  });
+
+  return foco === "todos" ? linhas : linhas.filter(l => K(l.programa) === K(foco));
+}
+
+// base de comparação da execução: a dotação da LOA; sem ela, a meta financeira do PPA
+function baseExec(l){
+  if(l.loaAtual !== undefined) return {valor:l.loaAtual, origem:"LOA"};
+  // no ciclo completo a meta soma quatro anos e não serve de base para a execução de um exercício
+  if(!noQuadrienio() && l.metaFinanceira != null) return {valor:l.metaFinanceira, origem:"PPA"};
+  return {valor:undefined, origem:null};
+}
+
+function situacao(l){
+  if(l.origem === "loa-orfa") return {cls:"diverg", txt:"fora do PPA"};
+  // sem a LOA carregada não há o que comparar: não é falha da ação
+  if(!temLOA()) return {cls:"neutro", txt:"aguardando LOA"};
+  if(l.loaAtual === undefined) return {cls:"atencao", txt:"sem dotação"};
+  if(!noQuadrienio() && l.metaFinanceira !== undefined && l.loaAtual !== undefined){
+    const dif = Math.abs(l.loaAtual - l.metaFinanceira) / (l.metaFinanceira || 1);
+    if(dif > 0.10) return {cls:"atencao", txt:"valor divergente"};
+  }
+  return {cls:"ok", txt:"vinculada"};
+}
+
+/* ========================= renderização ========================= */
+function temPPA(){ return (D.ppa.programas||[]).length > 0; }
+function temLDO(){ return (D.ldo.prioridades||[]).length > 0; }
+function temLOA(){ return (D.loa.dotacoes||[]).length > 0; }
+function codigoProgramaEhOrcamentario(){
+  return (D.ppa.programas||[]).some(p => (p.acoes||[]).some(a =>
+    a.funcional && String(a.funcional).split(".").includes(String(p.cod))));
+}
+function anosDoPlano(){ return exerciciosDisponiveis().length; }
+function temAlteracoes(){ return ((D.loa && D.loa.alteracoes) || []).length > 0; }
+function temExec(){ return (D.execucao.liquidacoes||[]).length > 0 || (D.execucao.empenhos||[]).length > 0; }
+function temContratos(){ return (D.contratos||[]).length > 0; }
+
+function aguarda(titulo, texto){
+  return `<div class="aguarda"><div class="ic">Aguardando carga</div><h4>${titulo}</h4><p>${texto}</p></div>`;
+}
+
+function renderFontes(){
+  const nAcoes = D.ppa.programas.reduce((s,p)=>s+(p.acoes||[]).length,0);
+  // recorte do filtro: ações do programa em foco e registros a elas vinculados
+  const prog = foco === "todos" ? null : (D.ppa.programas||[]).find(x => K(x.cod) === K(foco));
+  const acoesFoco = prog ? new Set((prog.acoes||[]).map(a => K(a.cod))) : null;
+  const noFoco = arr => (arr||[]).filter(r =>
+    acoesFoco.has(K(r.acao)) || (r.programa != null && K(r.programa) === K(foco))).length;
+
+  const fontes = [
+    ["PPA", temPPA(), `${D.ppa.programas.length} programas · ${nAcoes} ações`,
+      prog ? `${plural((prog.acoes||[]).length,"ação","ações")}${prog.acoesPrevistas ? ` de ${prog.acoesPrevistas} previstas` : ""}` : null],
+    ["LDO", temLDO(), `${(D.ldo.prioridades||[]).length} prioridades`,
+      prog ? `${noFoco(D.ldo.prioridades)} prioridades` : null],
+    ["LOA", temLOA(), `${(D.loa.dotacoes||[]).length} dotações`,
+      prog ? `${noFoco(D.loa.dotacoes)} dotações` : null],
+    ["Empenhos", (D.execucao.empenhos||[]).length>0, `${(D.execucao.empenhos||[]).length} registros`,
+      prog ? `${noFoco(D.execucao.empenhos)} registros` : null],
+    ["Liquidações", (D.execucao.liquidacoes||[]).length>0, `${(D.execucao.liquidacoes||[]).length} registros`,
+      prog ? `${noFoco(D.execucao.liquidacoes)} registros` : null],
+    ["Contratos", temContratos(), `${(D.contratos||[]).length} contratos`,
+      prog ? `${noFoco(D.contratos)} contratos` : null]
+  ];
+
+  document.getElementById("fontes").innerHTML =
+    `<div class="fontes-tit"><b>Base carregada · visão geral</b>
+       <span>${prog
+         ? `Números do município inteiro. A linha em roxo traz o recorte do programa ${prog.cod}, que é o que o restante da tela exibe.`
+         : "Inventário do que existe na base, independente dos filtros aplicados abaixo."}</span></div>` +
+    fontes.map(([nm,ok,qt,rec]) => `
+    <div class="fonte ${ok?"ok":""} ${nm==="PPA"?"raiz":""}">
+      <div class="nm">${nm}</div>
+      <div class="st">${ok ? "Carregado" : "Aguardando"}</div>
+      <div class="qt">${ok ? qt : "nenhum registro"}</div>
+      ${ok && rec !== null ? `<div class="rec">no filtro: ${rec}</div>` : ""}
+    </div>`).join("");
+}
+
+function renderMedidores(){
+  const linhas = construirMatriz();
+  const doPpa = linhas.filter(l => l.origem === "ppa");
+  const acoesOutros = doPpa.filter(l => l.loaAtual === undefined).map(l => l.programa);
+  const comLoa = doPpa.filter(l => l.loaAtual !== undefined);
+  const orfas = linhas.filter(l => l.origem === "loa-orfa");
+  const totalPPA = soma(doPpa, l => l.metaFinanceira);
+  // total do quadriênio, para dar a dimensão do plano mesmo olhando um ano
+  // programas no escopo do filtro e o valor global que cada um declara para o ciclo
+  const progsFoco = (D.ppa.programas||[]).filter(p => foco === "todos" || K(p.cod) === K(foco));
+  const declaradoCiclo = progsFoco.reduce((t,p) => t + (Number(p.valorGlobal)||0), 0);
+  const progsDetalhados = progsFoco.filter(p => (p.acoes||[]).length).length;
+  const totalCiclo = (D.ppa.programas||[])
+    .filter(p => foco === "todos" || K(p.cod) === K(foco))
+    .reduce((t,p) => t + (p.acoes||[]).reduce((u,a) =>
+        u + Object.values(a.metaFinanceira||{}).reduce((v,x)=>v+(Number(x)||0),0), 0), 0);
+  const totalLOA = soma(linhas, l => l.loaAtual);
+  const totalLiq = soma(linhas, l => l.liquidado);
+  const cobertura = doPpa.length ? comLoa.length / doPpa.length * 100 : 0;
+  // entrega só é mensurável onde há meta física e quantidade liquidada
+  const SEM_ENTREGA = ["A DEFINIR","PRODUTO","PORCENTAGEM","PERCENTUAL","PERCENTAGEM","%",""];
+  const totAcoes = doPpa.length;
+  const mensuraveis = doPpa.filter(l => l.unidade && !SEM_ENTREGA.includes(l.unidade.toUpperCase())).length;
+  const percentuais = doPpa.filter(l => l.unidade && ["PORCENTAGEM","PERCENTUAL","PERCENTAGEM","%"].includes(l.unidade.toUpperCase())).length;
+  const unidadesUsadas = [...new Set(doPpa.filter(l => l.unidade && SEM_ENTREGA.includes(l.unidade.toUpperCase()))
+    .map(l => `"${l.unidade.toLowerCase()}"`))].join(" e ") || "unidade genérica";
+  const comQtd = linhas.filter(l => l.qtdLiquidada !== undefined && l.metaFisica);
+  const entregaMedia = comQtd.length
+    ? comQtd.reduce((a,l) => a + l.qtdLiquidada / l.metaFisica * 100, 0) / comQtd.length : 0;
+
+  const meds = [
+    { rot: noQuadrienio() ? "Previsto no PPA · ciclo" : "Previsto no PPA · exercício",
+      // no ciclo, vale o valor global declarado pelos programas, e não só o das ações já detalhadas
+      val: temPPA() ? brlKpi(noQuadrienio() && declaradoCiclo ? declaradoCiclo : totalPPA) : "—",
+      nota: temPPA()
+        ? (noQuadrienio()
+            ? `${plural(progsFoco.length,"programa","programas")} · ${anosDoPlano()} exercícios` +
+              (progsDetalhados === 0
+                 ? " · nenhuma ação detalhada"
+                 : progsDetalhados < progsFoco.length
+                   ? ` · ${brlT(totalCiclo)} detalhado em ${plural(progsDetalhados,"programa","programas")}`
+                   : ` · ${plural(doPpa.length,"ação detalhada","ações detalhadas")}`)
+            : `${plural(doPpa.length,"ação do plano","ações do plano")}${declaradoCiclo ? ` · ciclo completo ${brlT(declaradoCiclo)}` : ""}`)
+        : "carregue o PPA",
+      pend: !temPPA() },
+    { rot: temLOA() && D.loa.exercicio ? `Autorizado na LOA · ${D.loa.exercicio}` : "Autorizado na LOA",
+      val: temLOA() ? brlKpi(totalLOA) : "—",
+      nota: temLOA()
+        ? `${plural(comLoa.length,"ação com dotação","ações com dotação")}${
+            D.loa.exercicio && !noQuadrienio() && String(D.loa.exercicio) !== String(exercicio)
+              ? " · exercício diferente do exibido" : ""}`
+        : "carregue a LOA", pend: !temLOA() },
+    { rot:"Cobertura do vínculo", val: temPPA()&&temLOA() ? `${Math.round(cobertura)}<span class="un">%</span>` : "—",
+      nota: temPPA()&&temLOA() ? `${plural(doPpa.length - comLoa.length, "ação sem dotação", "ações sem dotação")} · ${orfas.length} fora do PPA` : "depende de PPA e LOA", pend: !(temPPA()&&temLOA()) },
+    { rot:"Liquidado no exercício", val: temExec() ? brlKpi(totalLiq) : "—",
+      nota: temExec() ? (totalLOA ? `${pct(totalLiq/totalLOA*100)} do autorizado` : "") : "aguardando empenhos e liquidações", pend: !temExec() },
+    { rot:"Metas em unidade física", val: totAcoes ? `${mensuraveis}<span class="un">de ${totAcoes}</span>` : "—",
+      nota: totAcoes
+        ? (mensuraveis
+            ? `ações medidas em unidade própria${percentuais ? ` · ${percentuais} em percentual` : ""}`
+            : `todas as metas estão preenchidas, mas em ${unidadesUsadas} — percentual mede avanço, não entrega`)
+        : "carregue o PPA",
+      pend: !totAcoes || !mensuraveis },
+    { rot:"Execução da entrega", val: comQtd.length ? `${Math.round(entregaMedia)}<span class="un">%</span>` : "—",
+      nota: comQtd.length ? `${plural(comQtd.length,"ação com quantidade liquidada","ações com quantidade liquidada")}`
+                          : "depende da quantidade na liquidação", pend: !comQtd.length }
+  ];
+  document.getElementById("medidores").innerHTML = meds.map(m => `
+    <div class="med ${m.pend?"pendente":""}">
+      <div class="rot">${m.rot}</div>
+      <div class="val">${m.val}</div>
+      <div class="nota">${m.nota}</div>
+    </div>`).join("");
+}
+
+function renderExcecoes(){
+  const alvo = document.getElementById("excecoes");
+  if(!temPPA()){ alvo.innerHTML = aguarda("Nenhuma exceção a listar","As inconsistências entre plano, orçamento e execução aparecem aqui assim que o PPA for carregado."); return; }
+  const linhas = construirMatriz();
+  const itens = [];
+  const semAcoes = (D.ppa.programas||[]).filter(p => !(p.acoes||[]).length);
+  if(semAcoes.length){
+    const previstas = semAcoes.reduce((a,p)=>a+(p.acoesPrevistas||0),0);
+    itens.push([`<b>${plural(semAcoes.length,"programa ainda não teve","programas ainda não tiveram")} suas ações detalhadas</b>${previstas?` — ${previstas} ações previstas`:""}. Os totais desta tela cobrem apenas os programas já detalhados.`, false]);
+  }
+  linhas.filter(l => l.origem==="ppa" && l.loaAtual===undefined && temLOA())
+    .forEach(l => itens.push([`Ação <b>${l.acao} — ${l.acaoNome}</b> consta no PPA mas não recebeu dotação na LOA.`, false]));
+  linhas.filter(l => l.origem==="loa-orfa")
+    .forEach(l => itens.push([`Dotação de ${l.loaAtual!==undefined?brl(l.loaAtual):"valor não informado"} na ação <b>${l.acao}</b> (programa ${l.programa}) sem correspondência no PPA.`, true]));
+  if(temLOA() && !temAlteracoes())
+    itens.push([`<b>Dotação atualizada não carregada.</b> ${(D.loa.alteracoesObservacao || "Os valores da coluna repetem a dotação inicial; créditos adicionais do exercício não estão refletidos.")}`, true]);
+  linhas.filter(l => l.origem==="ppa" && situacao(l).txt==="valor divergente")
+    .forEach(l => itens.push([`Ação <b>${l.acao}</b>: PPA prevê ${brl(l.metaFinanceira)} e a LOA autoriza ${brl(l.loaAtual)} — diferença acima de 10%.`, false]));
+  linhas.filter(l => l.origem==="ppa" && (l.metaFisica===undefined || l.metaFisica===null))
+    .forEach(l => itens.push([`Ação <b>${l.acaoOrc || l.acao}</b> sem meta física no exercício: custo por unidade entregue fica indisponível.`, false]));
+  if(temExec()){
+    const semQtd = (D.execucao.liquidacoes||[]).filter(l => l.quantidade === undefined || l.quantidade === null || l.quantidade === "");
+    if(semQtd.length)
+      itens.push([`<b>${semQtd.length} de ${(D.execucao.liquidacoes||[]).length} liquidações</b> sem quantidade informada: nessas, a execução da entrega e o custo unitário não podem ser apurados.`, false]);
+  }
+  const UNID_INUTIL = ["A DEFINIR","PRODUTO","PORCENTAGEM","PERCENTUAL","PERCENTAGEM","%"];
+  const genericas = linhas.filter(l => l.origem==="ppa" && l.unidade && UNID_INUTIL.includes(l.unidade.toUpperCase()));
+  if(genericas.length){
+    const pc = genericas.filter(l => ["PORCENTAGEM","PERCENTUAL","PERCENTAGEM","%"].includes(l.unidade.toUpperCase())).length;
+    itens.push([`<b>${plural(genericas.length,"ação tem","ações têm")} meta física preenchida, mas em unidade que não mede entrega.</b>` +
+      (pc ? ` Em ${pc === genericas.length ? "todas" : plural(pc,"delas","delas")} o registro é percentual — a quantidade existe (25% ao ano, por exemplo), só que 1% de "expandir a rede" não é grandeza física: não se compara com outro exercício, com outro município nem com preço de referência.` : "") +
+      ` Sem unidade física, o custo por unidade entregue não pode ser apurado. Veja o confronto entre lei e remessa abaixo.`, true]);
+  }
+  if(temExec() && !temLOA())
+    itens.push(['<b>Execução calculada sobre o PPA.</b> Sem a LOA carregada, o percentual compara o liquidado com a meta financeira do plano para o exercício, não com a dotação autorizada. Os valores marcados com † seguem essa base.', false]);
+  if(temLDO()){
+    linhas.filter(l => l.origem==="ppa" && !l.ldo && l.loaAtual!==undefined)
+      .forEach(l => itens.push([`Ação <b>${l.acaoOrc || l.acao}</b> recebeu dotação na LOA sem constar entre as prioridades da LDO.`, false]));
+    const semValor = (D.ldo.prioridades||[]).filter(p => !(p.metaFinanceira > 0));
+    if(semValor.length === (D.ldo.prioridades||[]).length && semValor.length)
+      itens.push([`${semValor.length === 1 ? "A <b>única prioridade da LDO</b> está" : `As <b>${semValor.length} prioridades da LDO</b> estão`} sem valor de meta financeira: a LDO não permite conferir se o orçado seguiu o priorizado.`, true]);
+  }
+
+  alvo.innerHTML = itens.length
+    ? `<h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--tinta-70);margin-bottom:10px">Exceções encontradas <span class="mono" style="color:var(--tinta-40)">${itens.length}</span></h4>
+       <ul class="excecoes">${itens.map(([t,g])=>`<li class="${g?"grave":""}">${t}</li>`).join("")}</ul>`
+    : `<p style="margin:0;font-size:13.5px;color:var(--tinta-70)">Nenhuma exceção encontrada entre as fontes carregadas até aqui.</p>`;
+}
+
+const UNID_SEM_ENTREGA = ["A DEFINIR","PRODUTO","PORCENTAGEM","PERCENTUAL","PERCENTAGEM","%",""];
+
+function diagnostico(a){
+  const unid = (a.unidade||"").toUpperCase();
+  const mensuravel = !UNID_SEM_ENTREGA.includes(unid);
+  const temLei = (a.metasLei||[]).length > 0;
+  if(mensuravel && temLei) return {cls:"ok", txt:"espelhada", nota:"A remessa traz unidade de medida própria e a lei declara metas concretas."};
+  if(!mensuravel && temLei) return {cls:"diverg", txt:"perdida na remessa", nota:`A lei declara ${a.metasLei.length} ${a.metasLei.length===1?"meta concreta":"metas concretas"}, mas a remessa registra a meta física como "${a.unidade||"não informada"}".`};
+  if(mensuravel && !temLei) return {cls:"atencao", txt:"só na remessa", nota:"A remessa traz unidade própria, mas não localizamos metas declaradas na lei para esta ação."};
+  return {cls:"neutro", txt:"não mensurável", nota:"Nem a lei nem a remessa oferecem meta que permita medir entrega."};
+}
+
+function renderConfronto(){
+  const alvo = document.getElementById("blocoConfronto");
+  const acoes = [];
+  (D.ppa.programas||[]).forEach(p => (p.acoes||[]).forEach(a => {
+    if(foco !== "todos" && K(p.cod) !== K(foco)) return;
+    acoes.push({...a, programa:p.cod, programaNome:p.nome});
+  }));
+  if(!acoes.length){
+    const pf = foco !== "todos" ? (D.ppa.programas||[]).find(x => K(x.cod) === K(foco)) : null;
+    alvo.innerHTML = pf
+      ? aguarda("Programa ainda sem ações detalhadas", `<b>${pf.cod} — ${pf.nome}</b>. Sem as ações carregadas, não há meta física da remessa para confrontar com o texto da lei.`)
+      : aguarda("Sem ações para confrontar","Carregue o PPA para comparar a meta declarada na lei com a meta física registrada na remessa.");
+    return;
+  }
+
+  const perdidas = acoes.filter(a => diagnostico(a).txt === "perdida na remessa");
+  const metasPerdidas = perdidas.reduce((n,a) => n + a.metasLei.length, 0);
+
+  alvo.innerHTML = `
+    ${perdidas.length ? `<div class="painel" style="border-left:3px solid var(--diverg);margin-bottom:12px">
+      <div style="font-size:14.5px;line-height:1.55">
+        <b>${plural(perdidas.length,"ação declara","ações declaram")} ${metasPerdidas} metas concretas na lei do PPA</b>
+        — obras a concluir, escolas a ampliar, alunos a atender — <b>mas a remessa ao controle externo registra a meta física como percentual ou rótulo genérico</b>.
+        O acompanhamento externo enxerga apenas um avanço abstrato; o que foi prometido à população não chega ao controle.
+      </div></div>` : ""}
+    <div class="painel rolagem"><table>
+      <thead><tr>
+        <th class="esq">Ação</th>
+        <th class="esq">Meta física na remessa</th>
+        <th class="esq">Metas declaradas na lei</th>
+        <th>Diagnóstico</th>
+      </tr></thead>
+      <tbody>${acoes.map(a => {
+        const dg = diagnostico(a);
+        const mf = (a.metaFisica||{})[exercicio];
+        return `<tr>
+          <td class="esq" style="min-width:230px">
+            <span class="cod-lin"><b style="color:var(--tinta-70)">${a.codOrcamentario || a.cod}</b></span><br>${a.nome}
+            ${a.objetivoLei ? `<div class="cod-lin" style="margin-top:4px;line-height:1.4">Objetivo ${a.objetivoLei}</div>` : ""}
+          </td>
+          <td class="esq mono" style="min-width:150px">${mf != null ? n0(mf) : "—"} ${a.unidade || "sem unidade"}
+            ${a.metaCumulativa ? '<div class="cod-lin">cumulativa</div>' : ""}</td>
+          <td class="esq" style="min-width:330px">${(a.metasLei||[]).length
+            ? a.metasLei.map(m => `<div style="font-size:12.5px;padding:1px 0">• ${m}</div>`).join("")
+            : '<span class="vaz">não localizadas no texto publicado</span>'}</td>
+          <td style="min-width:150px;text-align:left"><span class="et ${dg.cls}">${dg.txt}</span>
+            <div class="cod-lin" style="margin-top:5px;line-height:1.45;white-space:normal">${dg.nota}</div></td>
+        </tr>`;
+      }).join("")}</tbody>
+    </table>
+    <p style="font-size:12px;color:var(--tinta-40);margin:12px 0 0;line-height:1.55">
+      Metas da lei extraídas do texto publicado; meta física conforme a remessa ao TCE.
+      ${D.fonteLei ? "Fonte: " + D.fonteLei : ""}
+    </p></div>`;
+}
+
+function renderMatriz(){
+  const alvo = document.getElementById("tabelaMatriz");
+  if(!temPPA()){ alvo.innerHTML = aguarda("Matriz vazia","Carregue o PPA para que cada ação vire uma linha. LDO, LOA e execução preenchem as colunas seguintes conforme forem carregadas."); return; }
+  const linhas = construirMatriz();
+  if(!linhas.length && foco !== "todos"){
+    const p = (D.ppa.programas||[]).find(x => K(x.cod) === K(foco));
+    alvo.innerHTML = aguarda("Programa ainda sem ações detalhadas",
+      `${p ? `<b>${p.cod} — ${p.nome}</b>. ` : ""}O PPA prevê ${p && p.acoesPrevistas ? plural(p.acoesPrevistas,"ação","ações") : "ações"} para este programa, mas o detalhamento ainda não foi carregado. Escolha outro programa no seletor ou volte a "todos".`);
+    return;
+  }
+  const cel = (v, f) => v == null ? `<td class="mono vaz">—</td>` : `<td class="mono">${f(v)}</td>`;
+
+  const corpo = linhas.map(l => {
+    const s = situacao(l);
+    // execução financeira: valor liquidado sobre a dotação autorizada
+    const base = baseExec(l);
+    const execFin = (l.liquidado !== undefined && base.valor) ? pct(l.liquidado / base.valor * 100) : null;
+    const baseMarca = base.origem === "PPA" ? ' <span style="color:var(--alerta)">†</span>' : "";
+    // execução da entrega: quantidade liquidada sobre a meta física prevista
+    const execFis = (l.qtdLiquidada !== undefined && l.metaFisica) ? pct(l.qtdLiquidada / l.metaFisica * 100) : null;
+    // custo unitário: só sai das duas juntas
+    const custoUnit = (l.liquidado !== undefined && l.qtdLiquidada) ? brlP(l.liquidado / l.qtdLiquidada) : null;
+    // marca o custo unitário quando parte das liquidações da ação não informou quantidade
+    const semQtdNaAcao = (D.execucao.liquidacoes||[]).some(x => chave(x.programa,x.acao) === l.k
+      && (x.quantidade === undefined || x.quantidade === null || x.quantidade === ""));
+    return `<tr>
+      <td class="esq">
+        <div class="cod-lin">${l.acaoOrc ? `<b style="color:var(--tinta-70)">${l.programa}.${l.acaoOrc}</b>` : "ação sem código orçamentário"}${(l.acaoOrc && K(l.acaoOrc) !== K(l.acao)) ? `<span class="reg" title="Códigos de registro na remessa do Esfinge, usados como chave de ligação entre PPA, LDO e LOA. Não são os códigos orçamentários.">reg. ${l.programa}/${l.acao}</span>` : ""}</div>
+        <div>${l.acaoNome}</div>
+        <div class="cod-lin">${l.programaNome}</div>
+      </td>
+      ${cel(l.metaFisica, v => n0(v) + (l.unidade ? " " + l.unidade : ""))}
+      ${cel(l.metaFinanceira, brl)}
+      <td class="mono">${l.ldo ? '<span class="et ok">prioridade</span>' : (temLDO() ? '<span class="et neutro">não priorizada</span>' : vaz)}</td>
+      ${cel(l.loaInicial, brl)}
+      ${cel(l.loaAtual, brl)}
+      ${cel(l.empenhado, brl)}
+      ${cel(l.liquidado, brl)}
+      ${cel(l.pago, brl)}
+      <td class="mono" ${base.origem === "PPA" ? 'title="sem LOA carregada: a comparação usa a meta financeira do PPA para o exercício"' : ""}>${execFin ? execFin + baseMarca : vaz}</td>
+      ${cel(l.qtdLiquidada, v => n0(v) + (l.unidade && !["A DEFINIR","PRODUTO"].includes(l.unidade.toUpperCase()) ? " " + l.unidade : ""))}
+      <td class="mono">${execFis ?? vaz}</td>
+      <td class="mono" ${custoUnit && semQtdNaAcao ? 'title="parte das liquidações desta ação não informou quantidade: o custo por unidade está superestimado"' : ""}>${custoUnit ?? vaz}${custoUnit && semQtdNaAcao ? ' <span style="color:var(--alerta)">*</span>' : ""}</td>
+      <td><span class="et ${s.cls}">${s.txt}</span></td>
+    </tr>`;
+  }).join("");
+
+  const tot = k => soma(linhas, l => l[k]);
+  alvo.innerHTML = `
+    ${noQuadrienio() ? `<p style="margin:0 0 10px;font-size:12.5px;color:var(--alerta)">Ciclo completo: as metas somam os ${anosDoPlano()} exercícios do plano. Dotação e execução continuam sendo as do exercício carregado — não compare uma coluna com a outra nesta visão.</p>` : ""}
+    ${temLOA() && !temAlteracoes() ? `<p style="margin:0 0 10px;font-size:12.5px;color:var(--alerta)">* dotação atualizada ainda igual à inicial — as alterações orçamentárias do exercício não foram carregadas.</p>` : ""}
+    <table>
+      <thead><tr>
+        <th class="esq">Programa · Ação</th>
+        <th>Meta física<br>PPA${noQuadrienio() ? " (ciclo)" : ""}</th><th>Meta financeira<br>PPA${noQuadrienio() ? " (ciclo)" : ""}</th><th>LDO</th>
+        <th>Dotação<br>inicial</th><th>Dotação<br>${temAlteracoes() ? "atualizada" : "atualizada *"}</th>
+        <th>Empenhado</th><th>Liquidado</th><th>Pago</th><th>Execução<br>financeira</th>
+        <th>Qtd.<br>liquidada</th><th>Execução<br>da entrega</th><th>Custo<br>unitário</th><th>Vínculo</th>
+      </tr></thead>
+      <tbody>${corpo}</tbody>
+      <tfoot><tr>
+        <td class="esq">${noQuadrienio() ? `Total — ciclo ${exerciciosDisponiveis()[0]}–${exerciciosDisponiveis().slice(-1)[0]}` : `Total — exercício ${exercicio ?? ""}`}</td>
+        <td></td>
+        <td class="mono">${temPPA()?brl(tot("metaFinanceira")):vaz}</td>
+        <td></td>
+        <td class="mono">${temLOA()?brl(tot("loaInicial")):vaz}</td>
+        <td class="mono">${temLOA()?brl(tot("loaAtual")):vaz}</td>
+        <td class="mono">${temExec()?brl(tot("empenhado")):vaz}</td>
+        <td class="mono">${temExec()?brl(tot("liquidado")):vaz}</td>
+        <td class="mono">${temExec()?brl(tot("pago")):vaz}</td>
+        <td colspan="5"></td>
+      </tr></tfoot>
+    </table>`;
+}
+
+function renderProgramas(){
+  const alvo = document.getElementById("listaProgramas");
+  if(!temPPA()){ alvo.innerHTML = aguarda("PPA não carregado","Envie a lei do Plano Plurianual e seus anexos. Preciso de: código e nome do programa, objetivo, público-alvo, órgão responsável e, para cada ação, produto, unidade de medida, meta física e meta financeira por exercício."); return; }
+  const ordenados = [...D.ppa.programas].sort((a,b) => (b.acoes||[]).length - (a.acoes||[]).length);
+  alvo.innerHTML = ordenados.map((p,i) => {
+    const totMeta = soma(p.acoes||[], a => (a.metaFinanceira||{})[exercicio]);
+    return `<div class="prog" data-prog="${i}">
+      <div class="prog-cab" role="button" tabindex="0">
+        <div>
+          <div class="cod">PROGRAMA ${codigoProgramaEhOrcamentario() ? p.cod : `<span title="Código de registro do programa na remessa do Esfinge. O código orçamentário do programa não consta das remessas.">reg. ${p.cod}</span>`}${p.orgao ? " · " + p.orgao : ""}${(p.acoes||[]).length ? "" : ` · <span style="color:var(--alerta)">aguardando detalhamento das ações</span>`}</div>
+          <h3>${p.nome}</h3>
+        </div>
+        <div class="dir">
+          <div class="mono" style="font-size:14px;font-weight:600">${totMeta?brl(totMeta):vaz}</div>
+          <div class="cod">${plural((p.acoes||[]).length, "ação", "ações")}</div>
+        </div>
+      </div>
+      <div class="prog-corpo">
+        <p class="obj"><b>Objetivo.</b> ${p.objetivo || "não informado"}</p>
+        ${p.finalidade ? `<p class="obj"><b>Finalidade.</b> ${p.finalidade}</p>` : ""}
+        ${p.publico ? `<p class="obj"><b>Público-alvo.</b> ${p.publico}</p>` : ""}
+        <div class="rolagem"><table>
+          <thead><tr><th class="esq">Ação</th><th class="esq">Produto</th><th>Meta física</th><th>Meta financeira</th></tr></thead>
+          <tbody>${(p.acoes||[]).map(a => `<tr>
+            <td class="esq"><span class="cod-lin">${a.codOrcamentario ? `<b style="color:var(--tinta-70)">${a.codOrcamentario}</b>` : ""}${(a.codOrcamentario && K(a.codOrcamentario) !== K(a.cod)) ? `<span class="reg" title="Código de registro da ação na remessa do Esfinge">reg. ${a.cod}</span>` : ""}</span><br>${a.nome}</td>
+            <td class="esq">${a.produto || vaz}</td>
+            <td class="mono">${(a.metaFisica||{})[exercicio] !== undefined ? n0(a.metaFisica[exercicio]) + " " + (a.unidade||"") : vaz}</td>
+            <td class="mono">${(a.metaFinanceira||{})[exercicio] !== undefined ? brl(a.metaFinanceira[exercicio]) : vaz}</td>
+          </tr>
+          ${(a.metasLei||[]).length ? `<tr><td colspan="4" style="padding-top:0;padding-bottom:12px">
+            <div style="background:var(--vazio);border-left:3px solid var(--selo);border-radius:0 var(--r) var(--r) 0;padding:9px 12px;text-align:left">
+              <div class="cod-lin" style="margin-bottom:5px">METAS DECLARADAS NA LEI DO PPA</div>
+              ${a.metasLei.map(m => `<div style="font-size:12.5px;padding:1px 0">• ${m}</div>`).join("")}
+            </div></td></tr>` : ""}`).join("")}</tbody>
+        </table></div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderMetasFiscais(){
+  const mf = (D.ldo && D.ldo.metasFiscais) || [];
+  if(!mf.length) return "";
+  const doAno = mf.filter(m => !exercicio || String(m.ano) === String(exercicio));
+  const lista = doAno.length ? doAno : mf;
+  const despesa = lista.find(m => /despesa/i.test(m.tipo));
+  const loaTotal = soma(D.loa.dotacoes||[], d => d.dotacaoAtualizada ?? d.dotacaoInicial);
+  const alerta = (despesa && loaTotal && loaTotal > despesa.prevista)
+    ? `<p style="margin:12px 0 0;font-size:13px;color:var(--alerta)">
+         A LOA fixa ${brl(loaTotal)} em despesa, ${brl(loaTotal - despesa.prevista)} acima da meta fiscal de despesa total da LDO. Vale confirmar o que a meta da LDO considera.</p>` : "";
+  return `<div class="painel" style="margin-bottom:12px">
+    <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--tinta-70);margin-bottom:10px">
+      Metas fiscais da LDO <span class="mono" style="color:var(--tinta-40);font-size:11px">anexo de metas · distintas da meta física</span></h4>
+    <div class="rolagem"><table>
+      <thead><tr><th class="esq">Tipo</th><th>Ano</th><th>Prevista</th><th>A preços constantes</th><th>Realizada</th></tr></thead>
+      <tbody>${lista.map(m => `<tr>
+        <td class="esq">${m.tipo}</td>
+        <td class="mono">${m.ano}</td>
+        <td class="mono">${m.prevista != null ? brl(m.prevista) : vaz}</td>
+        <td class="mono">${m.constante != null ? brl(m.constante) : vaz}</td>
+        <td class="mono">${m.realizada != null ? brl(m.realizada) : vaz}</td>
+      </tr>`).join("")}</tbody>
+    </table></div>${alerta}</div>`;
+}
+
+function renderLdo(){
+  const alvo = document.getElementById("blocoLdo");
+  if(!temLDO()){ alvo.innerHTML = aguarda("LDO não carregada","Envie a Lei de Diretrizes Orçamentárias e o anexo de metas e prioridades. Preciso da lista de programas e ações eleitos prioridade para o exercício, com meta física e financeira quando houver."); return; }
+  const linhas = construirMatriz().filter(l => l.origem === "ppa");
+  const prior = linhas.filter(l => l.ldo);
+  const fora = linhas.filter(l => !l.ldo);
+  alvo.innerHTML = renderMetasFiscais() + `<div class="painel rolagem">
+    <p style="margin:0 0 12px;font-size:13.5px;color:var(--tinta-70)">
+      <b>${prior.length}</b> ações do PPA foram eleitas prioridade na LDO ${D.ldo.exercicio ? "de " + D.ldo.exercicio : ""};
+      <b>${fora.length}</b> ficaram fora.
+    </p>
+    <table>
+      <thead><tr><th class="esq">Ação</th><th>Meta física LDO</th><th>Meta financeira LDO</th><th>Meta financeira PPA</th><th>Situação</th></tr></thead>
+      <tbody>${linhas.map(l => `<tr>
+        <td class="esq"><span class="cod-lin">${l.acaoOrc ? `<b style="color:var(--tinta-70)">${l.acaoOrc}</b>` : ""}${(l.acaoOrc && K(l.acaoOrc) !== K(l.acao)) ? `<span class="reg" title="Código de registro da ação na remessa do Esfinge">reg. ${l.acao}</span>` : ""}</span><br>${l.acaoNome}</td>
+        <td class="mono">${l.ldo && l.ldo.metaFisica != null ? n0(l.ldo.metaFisica) : vaz}</td>
+        <td class="mono">${l.ldo && l.ldo.metaFinanceira != null ? brl(l.ldo.metaFinanceira) : vaz}</td>
+        <td class="mono">${l.metaFinanceira != null ? brl(l.metaFinanceira) : vaz}</td>
+        <td>${l.ldo ? '<span class="et ok">prioridade</span>' : '<span class="et neutro">não priorizada</span>'}</td>
+      </tr>`).join("")}</tbody>
+    </table></div>`;
+}
+
+function renderLoa(){
+  const alvo = document.getElementById("blocoLoa");
+  if(!temLOA()){ alvo.innerHTML = aguarda("LOA não carregada","Envie a Lei Orçamentária Anual e o quadro de detalhamento da despesa. Preciso de: programa, ação, unidade gestora, funcional programática, fonte de recurso, natureza da despesa e dotação inicial — e, se houver, a atualizada por créditos adicionais."); return; }
+  const linhas = construirMatriz();
+  alvo.innerHTML = `<div class="painel rolagem"><table>
+    <thead><tr><th class="esq">Ação</th><th class="esq">Unidade gestora</th><th class="esq">Fonte</th><th>Meta financeira PPA</th><th>Dotação inicial</th><th>Dotação atualizada</th><th>Diferença</th></tr></thead>
+    <tbody>${linhas.filter(l => l.loaAtual !== undefined).map(l => {
+      const dif = l.metaFinanceira !== undefined ? l.loaAtual - l.metaFinanceira : null;
+      const it = (D.loa.dotacoes||[]).find(d => chave(d.programa,d.acao) === l.k) || {};
+      return `<tr>
+        <td class="esq"><span class="cod-lin">${l.acaoOrc ? `<b style="color:var(--tinta-70)">${l.acaoOrc}</b>` : ""}${(l.acaoOrc && K(l.acaoOrc) !== K(l.acao)) ? `<span class="reg" title="Código de registro da ação na remessa do Esfinge">reg. ${l.acao}</span>` : ""}</span><br>${l.acaoNome}</td>
+        <td class="esq">${it.unidadeGestora || vaz}</td>
+        <td class="esq mono">${it.fonte || vaz}</td>
+        <td class="mono">${l.metaFinanceira != null ? brl(l.metaFinanceira) : vaz}</td>
+        <td class="mono">${brl(l.loaInicial)}</td>
+        <td class="mono">${brl(l.loaAtual)}</td>
+        <td class="mono">${dif === null ? vaz : (dif > 0 ? "+" : "") + brl(dif)}</td>
+      </tr>`;
+    }).join("")}</tbody>
+  </table></div>`;
+}
+
+function renderExec(){
+  const alvo = document.getElementById("blocoExec");
+  if(!temExec()){
+    alvo.innerHTML = aguarda("Execução não carregada",
+      "Envie os empenhos e as liquidações do exercício. Para cada empenho: número, data, programa, ação, credor, CNPJ, contrato vinculado, valor e situação. Para cada liquidação: número, data, empenho de origem, valor, documento comprobatório e descrição da despesa. Com isso o painel calcula o liquidado por ação e o custo por unidade entregue.");
+    return;
+  }
+  const linhas = construirMatriz().filter(l => l.liquidado !== undefined || l.empenhado !== undefined);
+  alvo.innerHTML = `<div class="painel rolagem"><table>
+    <thead><tr><th class="esq">Ação</th><th>Dotação atualizada</th><th>Liquidado</th><th>Execução financeira</th><th>Meta física</th><th>Qtd. liquidada</th><th>Execução da entrega</th><th>Custo unitário</th></tr></thead>
+    <tbody>${linhas.map(l => `<tr>
+      <td class="esq"><span class="cod-lin">${l.acaoOrc ? `<b style="color:var(--tinta-70)">${l.acaoOrc}</b>` : ""}${(l.acaoOrc && K(l.acaoOrc) !== K(l.acao)) ? `<span class="reg" title="Código de registro da ação na remessa do Esfinge">reg. ${l.acao}</span>` : ""}</span><br>${l.acaoNome}</td>
+      <td class="mono">${l.loaAtual !== undefined ? brl(l.loaAtual) : vaz}</td>
+      <td class="mono">${l.liquidado !== undefined ? brl(l.liquidado) : vaz}</td>
+      <td class="mono">${(l.liquidado !== undefined && l.loaAtual) ? pct(l.liquidado/l.loaAtual*100) : vaz}</td>
+      <td class="mono">${l.metaFisica !== undefined ? n0(l.metaFisica) + " " + (l.unidade||"") : vaz}</td>
+      <td class="mono">${l.qtdLiquidada !== undefined ? n0(l.qtdLiquidada) : vaz}</td>
+      <td class="mono">${(l.qtdLiquidada !== undefined && l.metaFisica) ? pct(l.qtdLiquidada/l.metaFisica*100) : vaz}</td>
+      <td class="mono">${(l.liquidado !== undefined && l.qtdLiquidada) ? brlP(l.liquidado/l.qtdLiquidada) : vaz}</td>
+    </tr>`).join("")}</tbody>
+  </table></div>`;
+}
+
+function renderRegua(){
+  const alvo = document.getElementById("blocoRegua");
+  const progs = (D.ppa.programas||[]).filter(p => foco === "todos" || K(p.cod) === K(foco));
+  if(!progs.length){ alvo.innerHTML = aguarda("Sem programas para avaliar","Carregue o PPA para verificar se a finalidade declarada permite julgar a aderência dos contratos."); return; }
+
+  const comObjetivo = progs.filter(p => (p.objetivo||"").trim()).length;
+  const comFinalidade = progs.filter(p => (p.finalidade||"").trim()).length;
+  const comPublico = progs.filter(p => (p.publico||"").trim()).length;
+  const truncados = progs.filter(p => (p.objetivo||"").length >= 249).length;
+  const acoes = progs.flatMap(p => p.acoes||[]);
+  const comProduto = acoes.filter(a => (a.produto||"").trim()).length;
+
+  const medida = (rot, n, tot, nota, bom) => `
+    <div class="med ${bom ? "" : "pendente"}" style="border-top-color:${bom ? "var(--selo)" : "var(--diverg)"}">
+      <div class="rot">${rot}</div>
+      <div class="val">${n}<span class="un">de ${tot}</span></div>
+      <div class="nota">${nota}</div>
+    </div>`;
+
+  const faltas = [];
+  if(comPublico < progs.length) faltas.push(`<b>público-alvo não declarado</b> em ${plural(progs.length-comPublico,"programa","programas")} — sem ele, não há como verificar se o contrato atende a quem o programa se destina`);
+  if(comFinalidade < progs.length) faltas.push(`<b>finalidade não declarada</b> em ${plural(progs.length-comFinalidade,"programa","programas")} — a análise terá de se apoiar apenas no objetivo`);
+  if(truncados) faltas.push(`<b>${plural(truncados,"objetivo aparentemente truncado","objetivos aparentemente truncados")}</b> em 255 caracteres — o texto da remessa pode estar cortado; o texto integral da lei é mais confiável como régua`);
+  if(comProduto < acoes.length) faltas.push(`<b>${plural(acoes.length-comProduto,"ação sem produto","ações sem produto")} declarado</b> — o produto é o que liga o objeto contratado à entrega esperada`);
+
+  const p1 = progs.length === 1 ? progs[0] : null;
+
+  alvo.innerHTML = `
+    <div class="medidores">
+      ${medida("Objetivo declarado", comObjetivo, progs.length, "texto que descreve o que o programa pretende", comObjetivo === progs.length)}
+      ${medida("Finalidade declarada", comFinalidade, progs.length, "campo próprio da finalidade na remessa", comFinalidade === progs.length)}
+      ${medida("Público-alvo declarado", comPublico, progs.length, "a quem o programa se destina", comPublico === progs.length)}
+      ${medida("Ações com produto", comProduto, acoes.length || 0, "o que cada ação entrega", acoes.length && comProduto === acoes.length)}
+    </div>
+
+    ${faltas.length ? `<div class="painel" style="border-left:3px solid var(--diverg);margin-bottom:12px">
+      <div class="cod-lin" style="margin-bottom:8px">O QUE FALTA PARA A RÉGUA FICAR COMPLETA</div>
+      <ul class="itens risco">${faltas.map(f => `<li>${f}</li>`).join("")}</ul>
+      <p style="font-size:12.5px;color:var(--tinta-70);margin:10px 0 0;line-height:1.55">
+        Lacuna na régua não impede a análise, mas empurra os casos para <b>inconclusivo</b> — que é a classificação honesta quando não há contra o que comparar. Vale corrigir na origem antes de rodar a fase 4.</p>
+    </div>` : ""}
+
+    ${p1 ? `<div class="painel">
+      <div class="cod-lin" style="margin-bottom:10px">A RÉGUA DO PROGRAMA ${p1.cod}</div>
+      ${[["Objetivo", p1.objetivo], ["Finalidade", p1.finalidade], ["Público-alvo", p1.publico]].map(([r,v]) => `
+        <div style="margin-bottom:10px">
+          <div style="font-size:12px;font-weight:600;color:var(--tinta)">${r}</div>
+          <div style="font-size:13px;color:${v ? "var(--tinta-70)" : "var(--diverg)"};line-height:1.5">${v || "não declarado na remessa"}</div>
+        </div>`).join("")}
+      <div style="font-size:12px;font-weight:600;color:var(--tinta);margin-top:14px">A ponte em duas pernas</div>
+      <p style="font-size:12.5px;color:var(--tinta-70);margin:4px 0 10px;line-height:1.55">
+        O objeto contratado quase nunca se parece com o objetivo do programa: um é meio, o outro é fim. Combustível não se compara a "promover educação de qualidade".
+        Quem faz a ligação é o <b>produto da ação</b>. A análise pergunta duas coisas — o objeto serve ao produto? o produto serve ao objetivo? —
+        e a segunda pergunta se responde <b>uma vez por ação</b>, valendo para todos os contratos dela.</p>
+      <div class="rolagem"><table style="margin-bottom:14px">
+        <thead><tr><th class="esq">Ação</th><th class="esq">Produto da ação</th><th class="esq">Serve ao objetivo do programa?</th></tr></thead>
+        <tbody>${(p1.acoes||[]).map(a => {
+          const av = a.aderenciaProduto;
+          return `<tr>
+            <td class="esq"><span class="cod-lin">${a.codOrcamentario || a.cod}</span></td>
+            <td class="esq">${a.produto || '<span class="vaz">não declarado</span>'}</td>
+            <td class="esq">${av && av.classificacao
+              ? `<span class="et ${classeAderencia(av.classificacao)}">${av.classificacao}</span>${av.justificativa ? `<div style="font-size:12px;color:var(--tinta-70);margin-top:4px;line-height:1.45">${av.justificativa}</div>` : ""}`
+              : '<span class="et neutro">não avaliado</span> <span class="cod-lin">avaliação única, feita antes dos contratos</span>'}</td>
+          </tr>`;
+        }).join("")}</tbody>
+      </table></div>
+      <div style="font-size:12px;font-weight:600;color:var(--tinta);margin-top:12px">Produtos esperados das ações</div>
+      <div class="rolagem"><table style="margin-top:6px">
+        <thead><tr><th class="esq">Ação</th><th class="esq">Produto declarado</th><th class="esq">O que o contrato deveria entregar</th></tr></thead>
+        <tbody>${(p1.acoes||[]).map(a => `<tr>
+          <td class="esq"><span class="cod-lin">${a.codOrcamentario || a.cod}</span><br>${a.nome}</td>
+          <td class="esq">${a.produto || '<span class="vaz">não declarado</span>'}</td>
+          <td class="esq">${(a.metasLei||[]).length
+            ? a.metasLei.slice(0,3).map(m => `<div style="font-size:12.5px">• ${m}</div>`).join("") + (a.metasLei.length>3 ? `<div class="cod-lin">e mais ${a.metasLei.length-3} na lei</div>` : "")
+            : '<span class="vaz">sem metas mapeadas na lei</span>'}</td>
+        </tr>`).join("")}</tbody>
+      </table></div>
+    </div>` : `<div class="painel"><p style="margin:0;font-size:13.5px;color:var(--tinta-70)">
+      Escolha um programa no seletor do topo para ver a régua completa — objetivo, finalidade, público-alvo e os produtos que cada ação promete entregar.</p></div>`}`;
+}
+
+/* =========================================================================
+   Camada determinística: verificações que não dependem de modelo.
+   Rodam antes da análise semântica, são explicáveis em uma linha
+   e servem de controle — divergir delas é motivo para investigar.
+   ========================================================================= */
+const CATALOGO_REGRAS = [
+  ["vinculo",    "Vínculo declarado",        "O contrato informa o programa e a ação que o custeiam."],
+  ["existe",     "Ação existe no PPA",       "A ação informada consta do plano."],
+  ["dotacao",    "Ação com dotação na LOA",  "Existe autorização de despesa para a ação."],
+  ["teto",       "Valor dentro da dotação",  "O valor global do contrato não supera a dotação da ação."],
+  ["natureza",   "Natureza compatível",      "Investimento em ação de projeto, custeio em ação de atividade."],
+  ["objeto",     "Objeto descrito",          "O objeto tem texto suficiente para permitir verificação."],
+  ["fornecedor", "Fornecedor identificado",  "Nome e CNPJ presentes, para cruzar com o credor do empenho."],
+  ["vigencia",   "Vigência informada",       "Início e fim, base para reabrir a análise a cada aditivo."]
+];
+
+function contextoRegras(){
+  const acoes = new Map(), dot = new Map();
+  (D.ppa.programas||[]).forEach(p => (p.acoes||[]).forEach(a => acoes.set(chave(p.cod,a.cod), {...a, programa:p.cod})));
+  (D.loa.dotacoes||[]).forEach(d => {
+    const k = chave(d.programa,d.acao);
+    const at = dot.get(k) || {valor:0, natureza:d.naturezaDespesa || ""};
+    at.valor += Number(d.dotacaoAtualizada ?? d.dotacaoInicial) || 0;
+    dot.set(k, at);
+  });
+  return {acoes, dot};
+}
+
+function regrasFormais(c, ctx){
+  const achados = [];
+  const k = chave(c.programa, c.acao);
+  const acao = ctx.acoes.get(k);
+  const dotacao = ctx.dot.get(k);
+  const add = (id, nivel, texto) => achados.push({id, nivel, texto});
+
+  if(!c.programa || !c.acao) add("vinculo","grave","Contrato sem programa ou ação declarados: não há régua contra a qual medir.");
+  else if(!acao) add("existe","grave",`Ação ${c.acao} do programa ${c.programa} não consta do PPA carregado.`);
+
+  if(acao && !dotacao) add("dotacao","atencao","A ação existe no plano mas não recebeu dotação na LOA — despesa sem autorização localizada.");
+
+  if(dotacao && c.valorGlobal && c.valorGlobal > dotacao.valor)
+    add("teto","atencao",`Valor global (${brl(c.valorGlobal)}) supera a dotação da ação (${brl(dotacao.valor)}).`);
+
+  // ação iniciada em 1 é projeto, em 2 é atividade — a natureza da despesa deveria acompanhar
+  const codAcao = String(c.acao||"");
+  const nat = (c.naturezaDespesa || (dotacao && dotacao.natureza) || "").replace(/\D/g,"");
+  if(codAcao && nat){
+    const investimento = nat.startsWith("4");
+    const custeio = nat.startsWith("3");
+    if(codAcao.startsWith("2") && investimento)
+      add("natureza","atencao","Despesa de investimento em ação de atividade: verifique se não deveria estar em ação de projeto.");
+    if(codAcao.startsWith("1") && custeio)
+      add("natureza","atencao","Despesa de custeio em ação de projeto: verifique a classificação.");
+  }
+
+  const objeto = (c.objeto||"").trim();
+  if(!objeto) add("objeto","grave","Contrato sem objeto descrito: a análise de aderência não pode ser feita.");
+  else if(objeto.length < 40) add("objeto","atencao","Objeto curto demais para permitir verificação — a análise tende a inconclusivo.");
+
+  if(!c.fornecedor || !c.cnpj) add("fornecedor","atencao","Fornecedor ou CNPJ ausente: impede o cruzamento com o credor do empenho.");
+  if(!c.vigenciaInicio || !c.vigenciaFim) add("vigencia","atencao","Vigência incompleta: aditivos que ampliam o objeto não serão detectados.");
+
+  return achados;
+}
+
+function classeAderencia(c){
+  const m = {"aderente":"ok","parcialmente aderente":"atencao","não aderente":"diverg","inconclusivo":"neutro"};
+  return m[(c||"").toLowerCase()] || "neutro";
+}
+
+function renderContratos(){
+  const alvo = document.getElementById("blocoContratos");
+  const progs = (D.ppa.programas||[]).filter(p => foco === "todos" || K(p.cod) === K(foco));
+  const p1 = progs.length === 1 ? progs[0] : null;
+  const lista = (D.contratos||[]).filter(c => foco === "todos" || K(c.programa) === K(foco));
+  const ctx = contextoRegras();
+
+  const tresPerguntas = `
+    <div class="painel" style="margin-bottom:12px;border-left:3px solid var(--ia)">
+      <div class="cod-lin" style="margin-bottom:10px">TRÊS PERGUNTAS DIFERENTES, NÃO UMA</div>
+      <div class="tres">
+        ${[["1","Enquadramento","O contrato está na dotação certa?","Verificação formal, determinística. Não depende de modelo e não admite dúvida.","var(--selo)"],
+           ["2","Aderência","O objeto serve à finalidade do programa?","Leitura interpretativa. Produz classificação com justificativa e nível de confiança.","var(--ia)"],
+           ["3","Contribuição","A entrega fez avançar a meta?","Depende de quantidade na liquidação e de meta em unidade física. Hoje indisponível.","var(--alerta)"]
+          ].map(([n,t,q,d,cor]) => `
+          <div style="border:1px solid var(--linha);border-top:3px solid ${cor};border-radius:var(--r);padding:11px 13px">
+            <div class="cod-lin" style="color:${cor}">PERGUNTA ${n}</div>
+            <div style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:16px;font-weight:600;margin:3px 0 5px">${t}</div>
+            <div style="font-size:12.5px;color:var(--tinta);margin-bottom:5px"><b>${q}</b></div>
+            <div style="font-size:12px;color:var(--tinta-70);line-height:1.5">${d}</div>
+          </div>`).join("")}
+      </div>
+      <p style="font-size:12.5px;color:var(--tinta-70);margin:11px 0 0;line-height:1.55">
+        Tratar as três como uma só é o caminho mais curto para o painel afirmar o que não pode sustentar. Cada contrato recebe as três respostas em separado.</p>
+    </div>`;
+
+  // ---------- sem contratos carregados ----------
+  if(!lista.length){
+    const acaoEx = p1 && (p1.acoes||[])[0];
+    alvo.innerHTML = tresPerguntas + `
+      <div class="painel" style="margin-bottom:12px">
+        <div class="cod-lin" style="margin-bottom:10px">PERGUNTA 1 · AS VERIFICAÇÕES QUE RODAM ANTES DA IA</div>
+        <p style="font-size:12.5px;color:var(--tinta-70);margin:0 0 10px;line-height:1.55">
+          São determinísticas: filtram volume, custam nada e servem de controle. Se a análise semântica aprovar algo que uma destas reprovou, há o que investigar.</p>
+        <div class="rolagem"><table>
+          <thead><tr><th class="esq">Verificação</th><th class="esq">O que confere</th></tr></thead>
+          <tbody>${CATALOGO_REGRAS.map(([id,nome,desc]) => `<tr>
+            <td class="esq"><b>${nome}</b></td><td class="esq">${desc}</td></tr>`).join("")}</tbody>
+        </table></div>
+      </div>
+
+      <div class="painel" style="margin-bottom:12px">
+        <div class="cod-lin" style="margin-bottom:10px">O QUE PRECISA VIR DE CADA CONTRATO</div>
+        <div class="rolagem"><table>
+          <thead><tr><th class="esq">Campo</th><th>Exigência</th><th class="esq">Para que serve na análise</th></tr></thead>
+          <tbody>${[
+            ["Número e ano", true, "Identifica o contrato e permite reabrir a análise a cada aditivo"],
+            ["Objeto, na íntegra", true, "Texto confrontado com o produto da ação — resumir aqui compromete tudo"],
+            ["Relação de itens, com valor", true, "Permite classificar item a item; sem ela quase tudo cai em parcialmente aderente"],
+            ["Justificativa da contratação", false, "Reforça a leitura quando o objeto é sucinto"],
+            ["Fornecedor e CNPJ", true, "Cruzamento com o credor do empenho"],
+            ["Valor global", true, "Materialidade e ordem da fila de revisão"],
+            ["Natureza da despesa", true, "Verificação de compatibilidade com o tipo da ação"],
+            ["Vigência e aditivos", true, "Aditivo que amplia o objeto reabre a análise"],
+            ["Programa e ação da dotação", true, "Par que liga o contrato à régua do programa"]
+          ].map(([campo,obr,serve]) => `<tr>
+            <td class="esq"><b>${campo}</b></td>
+            <td><span class="obr ${obr?"sim":"nao"}">${obr?"essencial":"desejável"}</span></td>
+            <td class="esq">${serve}</td></tr>`).join("")}</tbody>
+        </table></div>
+      </div>
+
+      ${p1 && acaoEx ? `<div class="painel" style="border-left:3px solid var(--ia)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+          <div class="cod-lin">PERGUNTA 2 · COMO O PARECER VAI SE PARECER</div>
+          <span class="et atencao">exemplo · contrato fictício</span>
+        </div>
+        <div class="par-ex" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:var(--vazio);border-radius:var(--r);padding:10px 12px">
+            <div class="cod-lin" style="color:var(--selo)">A RÉGUA — AÇÃO ${acaoEx.codOrcamentario||acaoEx.cod}</div>
+            <div style="font-size:12.5px;margin-top:6px"><b>Produto:</b> ${acaoEx.produto || "não declarado"}</div>
+            <div style="font-size:12.5px;margin-top:4px"><b>Público-alvo:</b> ${p1.publico || '<span style="color:var(--diverg)">não declarado</span>'}</div>
+          </div>
+          <div style="background:var(--vazio);border-radius:var(--r);padding:10px 12px">
+            <div class="cod-lin" style="color:var(--alerta)">O CONTRATO</div>
+            <div style="font-size:12.5px;line-height:1.5;margin-top:6px"><b>Contrato 000/2026 — R$ 4.200.000</b><br>
+            Objeto: aquisição de mobiliário escolar e equipamentos de informática, incluindo reforma da sede administrativa da secretaria.</div>
+          </div>
+        </div>
+        <div class="rolagem"><table style="margin-top:12px">
+          <thead><tr><th class="esq">Item</th><th>Valor</th><th class="esq">Classificação do item</th></tr></thead>
+          <tbody>
+            <tr><td class="esq">Mobiliário escolar para unidades de ensino</td><td class="mono">R$ 2.400.000</td><td class="esq"><span class="et ok">aderente</span></td></tr>
+            <tr><td class="esq">Equipamentos de informática para unidades de ensino</td><td class="mono">R$ 700.000</td><td class="esq"><span class="et ok">aderente</span></td></tr>
+            <tr><td class="esq">Reforma da sede administrativa da secretaria</td><td class="mono">R$ 1.100.000</td><td class="esq"><span class="et diverg">não aderente</span></td></tr>
+          </tbody>
+        </table></div>
+        <div style="background:var(--alerta-luz);border:1px solid #E7CFA6;border-radius:var(--r);padding:11px 13px;margin-top:12px">
+          <b style="font-size:13px">R$ 3.100.000 aderentes · R$ 1.100.000 a reclassificar</b>
+          <div style="font-size:12.5px;line-height:1.55;margin-top:6px">
+            Classificando por item, a saída é acionável: aponta quanto deveria migrar para ação de gestão.
+            Classificando o contrato inteiro, ele cairia em "parcialmente aderente" — uma resposta que não decide nada.</div>
+          ${!p1.publico ? `<div style="font-size:12px;color:var(--diverg);margin-top:8px">
+            Sem público-alvo declarado, um caso limítrofe sairia como inconclusivo.</div>` : ""}
+        </div>
+      </div>` : `<div class="painel"><p style="margin:0;font-size:13.5px;color:var(--tinta-70)">
+        Escolha um programa no seletor do topo para ver o exemplo de parecer aplicado à régua daquele programa.</p></div>`}`;
+    return;
+  }
+
+  // ---------- com contratos carregados ----------
+  const total = soma(lista, c => c.valorGlobal);
+  const comRegra = lista.map(c => ({c, r: regrasFormais(c, ctx)}));
+  const graves = comRegra.filter(x => x.r.some(a => a.nivel === "grave")).length;
+  const alertas = comRegra.filter(x => x.r.length && !x.r.some(a => a.nivel === "grave")).length;
+  const limpos = comRegra.length - graves - alertas;
+  const semAnalise = lista.filter(c => !c.classificacao).length;
+
+  // conferência: quanto a decisão humana concordou com a classificação automática
+  const revisados = lista.filter(c => c.classificacao && c.revisaoHumana && c.revisaoHumana.decisao);
+  const concordam = revisados.filter(c => c.revisaoHumana.decisao.toLowerCase() === c.classificacao.toLowerCase()).length;
+
+  const valorItens = c => (c.itens||[]).reduce((o,i) => {
+    const cls = (i.classificacao||"").toLowerCase();
+    o[cls] = (o[cls]||0) + (Number(i.valor)||0); return o; }, {});
+
+  alvo.innerHTML = tresPerguntas + `
+    <div class="medidores" style="margin-bottom:12px">
+      <div class="med"><div class="rot">Contratos no filtro</div><div class="val">${lista.length}</div>
+        <div class="nota">${brlT(total)} em valor global</div></div>
+      <div class="med ${graves?"":"pendente"}" style="border-top-color:${graves?"var(--diverg)":"var(--linha-forte)"}">
+        <div class="rot">Pergunta 1 · enquadramento</div><div class="val">${graves}<span class="un">graves</span></div>
+        <div class="nota">${alertas} com ressalva · ${limpos} sem apontamento</div></div>
+      <div class="med ${semAnalise?"pendente":""}"><div class="rot">Pergunta 2 · aderência</div>
+        <div class="val">${lista.length - semAnalise}<span class="un">de ${lista.length}</span></div>
+        <div class="nota">${semAnalise ? plural(semAnalise,"contrato aguardando análise","contratos aguardando análise") : "todos analisados"}</div></div>
+      <div class="med ${revisados.length?"":"pendente"}"><div class="rot">Conferência humana</div>
+        <div class="val">${revisados.length ? Math.round(concordam/revisados.length*100) + "<span class='un'>%</span>" : "—"}</div>
+        <div class="nota">${revisados.length ? `concordância em ${plural(revisados.length,"caso revisado","casos revisados")}` : "nenhum caso revisado ainda"}</div></div>
+    </div>
+
+    <div class="painel rolagem">
+      <table>
+        <thead><tr>
+          <th class="esq">Contrato</th><th class="esq">Objeto</th><th>Valor</th>
+          <th class="esq">1 · Enquadramento</th><th class="esq">2 · Aderência</th><th class="esq">3 · Contribuição</th>
+        </tr></thead>
+        <tbody>${comRegra.sort((a,b)=>(b.c.valorGlobal||0)-(a.c.valorGlobal||0)).map(({c,r}) => {
+          const grave = r.some(a => a.nivel === "grave");
+          const vi = valorItens(c);
+          const naoAder = (vi["não aderente"]||0) + (vi["nao aderente"]||0);
+          return `<tr>
+            <td class="esq mono">${c.numero || vaz}<div class="cod-lin">${c.programa||"?"} · ${c.acao||"?"}</div></td>
+            <td class="esq" style="min-width:230px">${c.objeto || vaz}
+              ${(c.itens||[]).length ? `<div class="cod-lin" style="margin-top:4px">${plural(c.itens.length,"item classificado","itens classificados")}${naoAder ? ` · ${brlT(naoAder)} a reclassificar` : ""}</div>` : ""}</td>
+            <td class="mono">${c.valorGlobal ? brl(c.valorGlobal) : vaz}</td>
+            <td class="esq" style="min-width:200px">
+              ${r.length ? `<span class="et ${grave?"diverg":"atencao"}">${grave ? "impedimento" : plural(r.length,"ressalva","ressalvas")}</span>
+                <div style="font-size:12px;color:var(--tinta-70);margin-top:5px;line-height:1.45;white-space:normal">${r.map(a=>a.texto).join("<br>")}</div>`
+                : '<span class="et ok">sem apontamento</span>'}</td>
+            <td class="esq" style="min-width:200px">
+              ${c.classificacao ? `<span class="et ${classeAderencia(c.classificacao)}">${c.classificacao}</span>
+                ${c.confianca != null ? `<span class="cod-lin"> confiança ${c.confianca}%</span>` : ""}
+                ${c.parecer ? `<div style="font-size:12px;color:var(--tinta-70);margin-top:5px;line-height:1.45;white-space:normal">${c.parecer}</div>` : ""}
+                ${c.revisaoHumana && c.revisaoHumana.decisao ? `<div class="cod-lin" style="margin-top:5px">revisão humana: ${c.revisaoHumana.decisao}${c.revisaoHumana.responsavel ? ` · ${c.revisaoHumana.responsavel}` : ""}</div>` : ""}`
+              : '<span class="et neutro">aguardando análise</span>'}</td>
+            <td class="esq" style="min-width:150px">
+              ${c.contribuicao ? `<span class="et ok">${c.contribuicao}</span>`
+                : '<span class="et neutro">indisponível</span><div class="cod-lin" style="margin-top:4px">depende de quantidade na liquidação e de meta em unidade física</div>'}</td>
+          </tr>`;
+        }).join("")}</tbody>
+      </table>
+      <p style="font-size:12px;color:var(--tinta-40);margin:12px 0 0;line-height:1.55">
+        A classificação é triagem. Casos com impedimento, não aderentes, inconclusivos ou acima do valor de corte vão para revisão humana, registrada em nome de quem decidiu.
+      </p>
+    </div>`;
+}
+
+function renderMunicipio(){
+  const nome = [D.municipio, D.uf].filter(Boolean).join(" · ") || "Município";
+  document.getElementById("municipio").textContent = nome;
+  document.getElementById("rodapeMunicipio").textContent =
+    D.municipio ? `Município de ${D.municipio}${D.uf ? " — " + D.uf : ""}.` : "Painel de trabalho.";
+}
+
+function renderSubtitulo(){
+  const partes = [];
+  if(D.ppa.vigencia) partes.push("PPA " + D.ppa.vigencia);
+  if(exercicio) partes.push(noQuadrienio() ? "ciclo completo" : "exercício " + exercicio);
+  const faltam = [!temPPA()&&"PPA", !temLDO()&&"LDO", !temLOA()&&"LOA", !temExec()&&"execução", !temContratos()&&"contratos"].filter(Boolean);
+  if(faltam.length) partes.push("aguardando: " + faltam.join(", "));
+  document.getElementById("subtitulo").textContent = partes.join(" · ") || "aguardando carga de dados";
+}
+
+function renderTudo(){
+  const anos = exerciciosDisponiveis();
+  const sel = document.getElementById("exercicio");
+  if(!anos.length){ sel.innerHTML = `<option>—</option>`; exercicio = null; }
+  else {
+    if(exercicio !== QUADRIENIO && !anos.includes(exercicio))
+      exercicio = String(D.loa.exercicio || D.ldo.exercicio || anos[0]);
+    const ciclo = anos.length > 1 ? `<option value="${QUADRIENIO}" ${noQuadrienio()?"selected":""}>${anos[0]}–${anos[anos.length-1]} · ciclo completo</option>` : "";
+    sel.innerHTML = ciclo + anos.map(a => `<option value="${a}" ${a===exercicio?"selected":""}>${a}</option>`).join("");
+  }
+  const sf = document.getElementById("foco");
+  const todos = [...(D.ppa.programas||[])];
+  const comAcoes = todos.filter(p => (p.acoes||[]).length);
+  const semAcoesLista = todos.filter(p => !(p.acoes||[]).length)
+    .sort((a,b) => (parseInt(a.cod,10)||0) - (parseInt(b.cod,10)||0));
+  const opcao = p => `<option value="${p.cod}" ${K(p.cod)===K(foco)?"selected":""}>${p.cod} — ${p.nome.slice(0,46)}</option>`;
+  sf.innerHTML = `<option value="todos">Todos os programas (${todos.length})</option>` +
+    (comAcoes.length ? `<optgroup label="Com ações detalhadas">${comAcoes.map(opcao).join("")}</optgroup>` : "") +
+    (semAcoesLista.length ? `<optgroup label="Aguardando detalhamento das ações">${semAcoesLista.map(opcao).join("")}</optgroup>` : "");
+  sf.disabled = !todos.length;
+  renderMunicipio();
+  renderFontes(); renderMedidores(); renderExcecoes(); renderConfronto(); renderMatriz();
+  renderProgramas(); renderLdo(); renderLoa(); renderExec(); renderRegua(); renderContratos();
+  renderSubtitulo();
+}
+
+/* ========================= carga de arquivo ========================= */
+function validar(obj){
+  const erros = [];
+  if(typeof obj !== "object" || obj === null) return ["O arquivo não contém um objeto JSON."];
+  if(!obj.ppa || !Array.isArray(obj.ppa.programas)) erros.push("Faltou a chave ppa.programas (lista).");
+  if(obj.loa && !Array.isArray(obj.loa.dotacoes)) erros.push("loa.dotacoes precisa ser uma lista.");
+  if(obj.ldo && !Array.isArray(obj.ldo.prioridades)) erros.push("ldo.prioridades precisa ser uma lista.");
+  if(obj.execucao){
+    if(obj.execucao.empenhos && !Array.isArray(obj.execucao.empenhos)) erros.push("execucao.empenhos precisa ser uma lista.");
+    if(obj.execucao.liquidacoes && !Array.isArray(obj.execucao.liquidacoes)) erros.push("execucao.liquidacoes precisa ser uma lista.");
+  }
+  return erros;
+}
+
+function adotar(obj){
+  D = Object.assign(clonar(VAZIO), obj);
+  D.ppa = Object.assign({programas:[]}, obj.ppa);
+  D.ldo = Object.assign({prioridades:[]}, obj.ldo);
+  D.loa = Object.assign({dotacoes:[]}, obj.loa);
+  D.execucao = Object.assign({empenhos:[],liquidacoes:[],pagamentos:[]}, obj.execucao);
+  D.contratos = obj.contratos || [];
+  exercicio = null;
+  renderTudo();
+}
+
+document.getElementById("btCarregar").addEventListener("click", () => document.getElementById("arquivo").click());
+document.getElementById("arquivo").addEventListener("change", ev => {
+  const f = ev.target.files[0]; if(!f) return;
+  const leitor = new FileReader();
+  leitor.onload = () => {
+    try{
+      const obj = JSON.parse(leitor.result);
+      const erros = validar(obj);
+      if(erros.length){ alert("Não consegui usar este arquivo:\n\n• " + erros.join("\n• ")); return; }
+      modoExemplo = false; document.body.classList.remove("exemplo");
+      adotar(obj);
+    }catch(e){
+      alert("O arquivo não é um JSON válido.\n\nDetalhe técnico: " + e.message);
+    }
+  };
+  leitor.readAsText(f, "utf-8");
+  ev.target.value = "";
+});
+
+document.getElementById("btModelo").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(MODELO, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "modelo-dados-municipio.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById("btExemplo").addEventListener("click", ev => {
+  modoExemplo = !modoExemplo;
+  document.body.classList.toggle("exemplo", modoExemplo);
+  ev.target.textContent = modoExemplo ? "Voltar ao painel vazio" : "Ver com dados de exemplo";
+  adotar(modoExemplo ? clonar(EXEMPLO) : clonar(VAZIO));
+});
+
+document.getElementById("exercicio").addEventListener("change", ev => { exercicio = ev.target.value; renderTudo(); });
+document.getElementById("foco").addEventListener("change", ev => { foco = ev.target.value; renderTudo(); });
+
+document.addEventListener("click", ev => {
+  const cab = ev.target.closest(".prog-cab");
+  if(cab) cab.parentNode.classList.toggle("aberto");
+});
+document.addEventListener("keydown", ev => {
+  if((ev.key === "Enter" || ev.key === " ") && ev.target.classList.contains("prog-cab")){
+    ev.preventDefault(); ev.target.parentNode.classList.toggle("aberto");
+  }
+});
+
+renderTudo();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Temporários do Office
+~$*.docx
+~$*.pptx
+~$*.xlsx
+
+# Trabalho local
+*.log
+node_modules/
+*.tmp
