@@ -1,0 +1,1042 @@
+{
+ "municipio": "Campo Grande",
+ "uf": "MS",
+ "fonte": "Remessa Esfinge (TCE/MS), PPA 2026-2029 (DIOGRANDE n. 8.175 de 30/12/2025) e LOA 2026 (DIOGRANDE n. 8.175, suplemento II). Piloto: programa 19, cinco ações e execução de 2026.",
+ "ppa": {
+  "vigencia": "2026-2029",
+  "lei": "PPA 2026-2029 — Projeto de Lei n. 12.050/2025",
+  "programas": [
+   {
+    "cod": "41",
+    "nome": "CONTROLE INTERNO INTEGRADO",
+    "objetivo": "A Lei 7.366, publicada no Diogrande (Diário Oficial de Campo Grande) em 30 de dezembro de 2024, institui a reforma administrativa que entrou em vigor em 1º de janeiro de 2025. Essa reforma resultou na reestruturação da Controladoria-Geral do Município, co",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 28044000.0,
+    "acoesPrevistas": 1,
+    "acoes": [
+     {
+      "cod": "2045",
+      "codOrcamentario": "2045",
+      "nome": "AÇÕES DE CONTROLE, FISCALIZAÇÃO E TRANSPARÊNCIA",
+      "unidadeGestora": "288313",
+      "produto": "AÇÕES DE CONTROLE, FISCALIZAÇÃO E TRANSPARÊNCIA OPERACIONALIZADAS.",
+      "unidade": "Porcentagem",
+      "metaCumulativa": true,
+      "funcao": "4 - Administração",
+      "subfuncao": "124 - Controle Interno",
+      "funcional": "4.124.41.2045",
+      "valorGlobal": 28044000.0,
+      "metaFisica": {
+       "2026": 25.0,
+       "2027": 25.0,
+       "2028": 25.0,
+       "2029": 25.0
+      },
+      "metaFinanceira": {
+       "2026": 6513000.0,
+       "2027": 6835000.0,
+       "2028": 7171000.0,
+       "2029": 7525000.0
+      },
+      "metasLei": []
+     }
+    ]
+   },
+   {
+    "cod": "19",
+    "nome": "RUMO À EXCELÊNCIA: CAMPO GRANDE, REFERÊNCIA NACIONAL EM EDUCAÇÃO",
+    "objetivo": "A Rede Municipal de Ensino - REME é composta de 206 unidades de ensino das quais 99 escolas, sendo 90 urbanas e 8 rurais, e 106 Escolas Municipais de Educação Infantil, que atendem cerca de 112 mil crianças, adolescentes, jovens e adultos. A rede conta co",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 6504717000.0,
+    "acoesPrevistas": 5,
+    "acoes": [
+     {
+      "cod": "1001",
+      "codOrcamentario": "1001",
+      "nome": "EXPANSÃO DA REDE DE EDUCAÇÃO INFANTIL MUNICIPAL",
+      "unidadeGestora": "288313",
+      "produto": "REDE DE EDUCAÇÃO INFANTIL MUNICIPAL EXPANDIDA",
+      "unidade": "Porcentagem",
+      "metaCumulativa": true,
+      "funcao": "12 - Educação",
+      "subfuncao": "365 - Educação Infantil",
+      "funcional": "12.365.19.1001",
+      "valorGlobal": 97703000.0,
+      "metaFisica": {
+       "2026": 25.0,
+       "2027": 25.0,
+       "2028": 25.0,
+       "2029": 25.0
+      },
+      "metaFinanceira": {
+       "2026": 22670000.0,
+       "2027": 23803000.0,
+       "2028": 24991000.0,
+       "2029": 26239000.0
+      },
+      "metasLei": [
+       "Concluir obras de 3 EMEIs na Região Urbana do Anhanduizinho",
+       "Concluir obra de 1 EMEI na Região Urbana do Bandeira",
+       "Concluir obra de 1 EMEI na Região Urbana do Imbirussu",
+       "Concluir obras de 2 EMEIs na Região Urbana do Lagoa",
+       "Concluir obra de 1 EMEI na Região Urbana do Prosa",
+       "Concluir obras de 2 EMEIs na Região Urbana do Segredo",
+       "Ampliar 25 Escolas de Educação Infantil da REME",
+       "Construir 10 novas escolas de Educação Infantil na REME",
+       "Adequação de 1 EMEI na área central (emenda nº 221)"
+      ],
+      "objetivoLei": "24 — Promover uma educação de qualidade, inclusiva e equitativa nas escolas de Educação Infantil da REME",
+      "iniciativaLei": "23 — Adequação e ampliação da rede física das Escolas Municipais de Educação Infantil"
+     },
+     {
+      "cod": "1002",
+      "codOrcamentario": "1002",
+      "nome": "EXPANSÃO DA REDE DO ENSINO FUNDAMENTAL DA REME",
+      "unidadeGestora": "288313",
+      "produto": "REDE DO ENSINO FUNDAMENTAL DA REME EXPANDIDA.",
+      "unidade": "Porcentagem",
+      "metaCumulativa": true,
+      "funcao": "12 - Educação",
+      "subfuncao": "361 - Ensino Fundamental",
+      "funcional": "12.361.19.1002",
+      "valorGlobal": 32440000.0,
+      "metaFisica": {
+       "2026": 25.0,
+       "2027": 25.0,
+       "2028": 25.0,
+       "2029": 25.0
+      },
+      "metaFinanceira": {
+       "2026": 7529000.0,
+       "2027": 7904000.0,
+       "2028": 8297000.0,
+       "2029": 8710000.0
+      },
+      "metasLei": [
+       "Concluir obra de Escola na Região Urbana do Lagoa",
+       "Concluir obra de Escolas na Região Urbana do Anhanduizinho",
+       "Concluir obra de Escolas no Campo",
+       "Ampliar as Escolas Municipais da REME",
+       "Revitalizar 100% das quadras esportivas das Escolas Municipais da REME",
+       "Construir 5 quadras esportivas nas Escolas Municipais da REME",
+       "Conclusão da obra de Escola no bairro Celina Jallad (emenda nº 225)"
+      ],
+      "objetivoLei": "25 — Oferecer uma educação de qualidade, inclusiva e equitativa nas escolas da REME, no Ensino Fundamental",
+      "iniciativaLei": "25 — Adequar e ampliar a rede física das Escolas Municipais da REME que oferecem o ensino fundamental"
+     },
+     {
+      "cod": "2001",
+      "codOrcamentario": "2001",
+      "nome": "OTIMIZAÇÃO DO ATENDIMENTO NA EDUCAÇÃO INFANTIL",
+      "unidadeGestora": "288313",
+      "produto": "ATENDIMENTO NA EDUCAÇÃO INFANTIL OTIMIZADA",
+      "unidade": "Porcentagem",
+      "metaCumulativa": true,
+      "funcao": "12 - Educação",
+      "subfuncao": "365 - Educação Infantil",
+      "funcional": "12.365.19.2001",
+      "valorGlobal": 1712100000.0,
+      "metaFisica": {
+       "2026": 25.0,
+       "2027": 25.0,
+       "2028": 25.0,
+       "2029": 25.0
+      },
+      "metaFinanceira": {
+       "2026": 456072000.0,
+       "2027": 398436000.0,
+       "2028": 418344000.0,
+       "2029": 439248000.0
+      },
+      "metasLei": [
+       "Fornecer kit escolar a 100% dos alunos matriculados na Educação Infantil da REME",
+       "Fornecer kit de uniforme escolar a 100% dos alunos matriculados na Educação Infantil da REME"
+      ],
+      "objetivoLei": "24 — Promover uma educação de qualidade, inclusiva e equitativa nas escolas de Educação Infantil da REME",
+      "iniciativaLei": "24 — Assegurar ambiente acolhedor, seguro e pedagogicamente estruturado na Educação Infantil"
+     },
+     {
+      "cod": "2002",
+      "codOrcamentario": "2002",
+      "nome": "OTIMIZAÇÃO DO ATENDIMENTO NO ENSINO FUNDAMENTAL DA REME",
+      "unidadeGestora": "288313",
+      "produto": "ATENDIMENTO NO ENSINO FUNDAMENTAL DA REME OTIMIZADA.",
+      "unidade": "Porcentagem",
+      "metaCumulativa": true,
+      "funcao": "12 - Educação",
+      "subfuncao": "361 - Ensino Fundamental",
+      "funcional": "12.361.19.2002",
+      "valorGlobal": 4561253000.0,
+      "metaFisica": {
+       "2026": 25.0,
+       "2027": 25.0,
+       "2028": 25.0,
+       "2029": 25.0
+      },
+      "metaFinanceira": {
+       "2026": 1063733000.0,
+       "2027": 1109456000.0,
+       "2028": 1164917000.0,
+       "2029": 1223147000.0
+      },
+      "metasLei": [
+       "Fornecer kit escolar a 100% dos alunos matriculados no Ensino Fundamental da REME",
+       "Fornecer kit de uniforme escolar a 100% dos alunos matriculados no Ensino Fundamental da REME",
+       "Fornecer alimentação escolar a 100% dos alunos matriculados no Ensino Fundamental da REME",
+       "Garantir transporte escolar gratuito para 100% dos estudantes da zona rural matriculados na REME"
+      ],
+      "objetivoLei": "26 — Garantir um Ensino Fundamental de qualidade na REME",
+      "iniciativaLei": "26 — Assegurar o desenvolvimento integral dos estudantes do Ensino Fundamental"
+     },
+     {
+      "cod": "2003",
+      "codOrcamentario": "2003",
+      "nome": "OTIMIZAÇÃO DO ATENDIMENTO NO ENSINO MÉDIO DA REME",
+      "unidadeGestora": "288313",
+      "produto": "ATENDIMENTO NO ENSINO MÉDIO DA REME",
+      "unidade": "Porcentagem",
+      "metaCumulativa": true,
+      "funcao": "12 - Educação",
+      "subfuncao": "362 - Ensino Médio",
+      "funcional": "12.362.19.2003",
+      "valorGlobal": 101221000.0,
+      "metaFisica": {
+       "2026": 25.0,
+       "2027": 25.0,
+       "2028": 25.0,
+       "2029": 25.0
+      },
+      "metaFinanceira": {
+       "2026": 23487000.0,
+       "2027": 24660000.0,
+       "2028": 25891000.0,
+       "2029": 27183000.0
+      },
+      "metasLei": [
+       "Garantir kits escolares completos para 100% dos estudantes matriculados no Ensino Médio da REME",
+       "Garantir kits de uniformes escolares completos para 100% dos estudantes matriculados no Ensino Médio da REME"
+      ],
+      "objetivoLei": "26 — Oferecer Educação Profissional Técnica em Agropecuária de excelência na REME",
+      "iniciativaLei": "27 — Garantir um Ensino Médio (Técnico em Agropecuária) de qualidade na REME"
+     }
+    ]
+   },
+   {
+    "cod": "26",
+    "nome": "CAMPO GRANDE COM SEGURANÇA E PROTEÇÃO À VIDA",
+    "objetivo": "Das principais atividades realizadas pela Guarda Civil Metropolitana (GCM): patrulhamento ostensivo e preventivo a bens, serviços e instalações; rondas preventivas nos terminais de transbordo; rondas preventivas nos cemitérios públicos da capital; ope",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 315858000.0,
+    "acoesPrevistas": 3,
+    "acoes": []
+   },
+   {
+    "cod": "1",
+    "nome": "INTEGRAÇÃO DE TRÂNSITO E TRANSPORTE COM MOBILIDADE URBANA SUSTENTÁVEL",
+    "objetivo": "Estes números mostram que a frota de veículos de Campo Grande/MS equivale a cerca de 1,40veículos por habitante, caracterizando um grande problema que impacta diretamente na qualidadede vida, no meio ambiente e economia. O aumento da frota de veículos p",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 528131000.0,
+    "acoesPrevistas": 5,
+    "acoes": []
+   },
+   {
+    "cod": "9",
+    "nome": "FORTALECIMENTO DA GESTÃO E GOVERNANÇA PÚBLICA",
+    "objetivo": "Campo Grande, como capital de Mato Grosso do Sul e principal hub econômico, logístico e de serviços do estado, enfrenta desafios complexos relacionados ao crescimento urbano acelerado, demandas por serviços públicos de qualidade e a necessidade de moderni",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 520152800.0,
+    "acoesPrevistas": 8,
+    "acoes": []
+   },
+   {
+    "cod": "18",
+    "nome": "PARK TEC CAMPO GRANDE",
+    "objetivo": "DESCRIÇÃO DO CENÁRIO ATUAL:Atualmente, o Parque Tecnológico está localizado na Avenida Rachid Neder, nº 760, no bairro Monte Castelo, em imóvel alugado, sendo que as despesas com serviços de abastecimento, insumos e manutenções são custeadas pela Secreta",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 2825000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "24",
+    "nome": "GESTÃO E DESENVOLVIMENTO URBANO",
+    "objetivo": "A gestão urbana de Campo Grande exige ações integradas e técnicas voltadas ao planejamento, licenciamento, fiscalização e controle do uso e ocupação do solo, com o objetivo de garantir um crescimento ordenado, sustentável e inclusivo da cidade. A atuaçã",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 53683000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "22",
+    "nome": "GESTÃO E MANUTENÇÃO DA SESAU",
+    "objetivo": "GESTÃO E MANUTENÇÃO DA SESAU",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 580994000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "32",
+    "nome": "GESTÃO OPERACIONAL DA ASSISTÊNCIA EM SAÚDE DO SERVIMED",
+    "objetivo": "DESCRIÇÃO DO CENÁRIO ATUAL: O SERVIMED constitui o sistema de assistência à saúde voltado aos servidores públicos municipais ativos, inativos e seus dependentes. Atualmente, o programa realiza o gerenciamento de atendimentos médicos, consultas especializa",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 641345000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "5",
+    "nome": "MINHA CASA LEGAL",
+    "objetivo": "De acordo com a Fundação João Pinheiro o deficit habitacional estimado para o Brasil, em 2022, foi da ordem de 6,215 milhões de domicílios, o que representa 8,3% do total de habitações ocupadas no país. Em termos absolutos, na comparação com 2019 (5.964.",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 113446000.0,
+    "acoesPrevistas": 3,
+    "acoes": []
+   },
+   {
+    "cod": "3",
+    "nome": "+ TECH CG",
+    "objetivo": "Com este programa a Prefeitura Municipal de Campo Grande, através da Agência Municipal de Tecnologia da Informação e Inovação - AGETEC, destinará recursos para a implementação de políticas públicas na área de Tecnologia da Informação computacional, geopro",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 203666000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "44",
+    "nome": "CUIDAR É PROTEGER - BEM ESTAR ANIMAL",
+    "objetivo": "DESCRIÇÃO DO CENÁRIO ATUAL;A Superintendência de Bem-Estar Animal (Subea), desde dezembro de 2022, colocou em prática ações e politicas publicas que atendem as necessidades para proteção animal. Considerando que essas políticas têm impacto direto na vida",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 29151000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "20",
+    "nome": "ADMINISTRAÇÃO DA SEMED",
+    "objetivo": "A Rede Municipal de Ensino (REME) compreende 206 unidades educacionais (99 escolas - sendo 91 urbanas e 8 rurais - e 107 Escolas de Educação Infantil), que atendem aproximadamente 111 mil estudantes e contam com mais de 12 mil profissionais da educação.O",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 1152143000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "56",
+    "nome": "RESERVA DE CONTINGÊNCIA",
+    "objetivo": "RESERVA DE CONTINGÊNCIA",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 30167000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "34",
+    "nome": "MODERNIZAÇÃO DA GESTÃO TRIBUTÁRIA MUNICIPAL",
+    "objetivo": "Garantir justiça fiscal e equidade na arrecadação tributáriaMelhorar a eficiência e a transparência da administração públicaModernizar a infraestrutura tecnológica da administração fazendária.Descrição do cenário atual:Os sistemas de arrecadação munic",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 931119000.0,
+    "acoesPrevistas": 3,
+    "acoes": []
+   },
+   {
+    "cod": "51",
+    "nome": "GESTÃO E MANUTENÇÃO DO PLANURB",
+    "objetivo": "ADMINISTRAÇÃO DA PLANURB: para o cumprimento de suas competências garantindo a eficácia de suas ações a PLANURB pretende modernizar a gestão de pessoas, reestruturar as instalações físicas e adquirir novos mobiliários e equipamentos.Modernizar a gestão d",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 19389000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "15",
+    "nome": "GESTÃO E MANUTENÇÃO DA PGM",
+    "objetivo": "A Procuradoria-Geral do Município de Campo Grande (PGM) desempenha papel essencial na Administração, comfundamento constitucional (art. 132 da CF, combinado com o art. 82 da Lei Orgânica Municipal de 1990), exercendoadvocacia pública, orientação normati",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 114394000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "21",
+    "nome": "SAÚDE PARA TODOS",
+    "objetivo": "SAÚDE PARA TODOS",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 8438744000.0,
+    "acoesPrevistas": 9,
+    "acoes": []
+   },
+   {
+    "cod": "12",
+    "nome": "GESTÃO E MANUTENÇÃO DA SEMADI",
+    "objetivo": "0 Programa de Fortalecimento Institucional da Secretaria Municipal de Administração e Inovação tem como objetivo promover a integração dos órgãos da administração direta, garantindo um envio eficiente, prestando suporte e executando as despesas essenci",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 134434000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "29",
+    "nome": "INFRAESTRUTURA E SERVIÇOS URBANOS",
+    "objetivo": "Atualmente em nossa capital há um número significativo de ruas não pavimentadas, especialmente em bairros periféricos ou de expansão recente. Essas vias sem asfalto afetam diretamente a qualidade de vida da população, dificulta a mobilidade e segurança,",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 2461530000.0,
+    "acoesPrevistas": 4,
+    "acoes": []
+   },
+   {
+    "cod": "10",
+    "nome": "GESTÃO E MANUTENÇÃO DA SELC.",
+    "objetivo": "GESTÃO E MANUTEÇÃO DA SELC.",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 5741000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "13",
+    "nome": "GESTÃO E VALORIZAÇÃO DO SERVIDOR PÚBLICO",
+    "objetivo": "0 Município de Campo Grande fundamenta-se no comprometimento, na dedicação e na atuação de seus servidores públicos, cuja contribuição é essencial para o fortalecimento da gestão pública e para o desenvolvimento da sociedade, garantindo a prestação de se",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 30945000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "35",
+    "nome": "GESTÃO E MANUTENÇÃO DA SEFAZ",
+    "objetivo": "GESTÃO E MANUTENÇÃO DA SEFAZ",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 180253000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "33",
+    "nome": "GESTÃO E MANUTENÇÃO DO SERVIMED",
+    "objetivo": "Garantir a gestão eficiente dos recursos administrativos do SERVIMED.",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 29028000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "30",
+    "nome": "GESTÃO E MANUTENÇÃO DA SISEP",
+    "objetivo": "GESTÃO E MANUTENÇÃO DA SISEP",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 120039000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "45",
+    "nome": "GESTÃO E MANUTENÇÃO DA SEAR",
+    "objetivo": "GESTÃO E MANUTENÇÃO DA SEAR",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 11295000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "39",
+    "nome": "TRILHAR - TRABALHO, INCLUSÃO E RENDA",
+    "objetivo": "Campo Grande vem demonstrando avanços importantes na geração de empregos formais, sendo responsável, em 2024, por 33% das vagas com carteira assinada de todo o Estado, com uma taxa de desocupação de 2,8%, inferior à média nacional. No entanto, o município",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 282714000.0,
+    "acoesPrevistas": 4,
+    "acoes": []
+   },
+   {
+    "cod": "16",
+    "nome": "JUVENTUDE NA ATIVA",
+    "objetivo": "Atualmente, a juventude enfrenta diversos desafios que impactam seu pleno desenvolvimento e participação na sociedade. Entre os principais problemas, destacam-se: Desemprego e informalidade: A cidade tem uma economia baseada no comércio, serviços e agron",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 22390200.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "42",
+    "nome": "GESTÃO E MANUENÇÃO DA CGM",
+    "objetivo": "GESTÃO E MANUENÇÃO DA CGM",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 22090000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "23",
+    "nome": "DESENVOLVIMENTO ECONÔMICO",
+    "objetivo": "Campo Grande/MS vem se consolidando como um polo estratégico para o desenvolvimento econômico regional e nacional, reunindo condições logísticas, geográficas e produtivas favoráveis à atração de investimentos e à diversificação da economia. Com uma base",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 70201000.0,
+    "acoesPrevistas": 3,
+    "acoes": []
+   },
+   {
+    "cod": "4",
+    "nome": "GESTÃO E MANUTENÇÃO DA AGETEC",
+    "objetivo": "A Agência Municipal de Tecnologia da Informação e Inovação - AGETEC, órgão da Administração Indireta da Prefeitura Municipal de Campo Grande, que tem como finalidade o planejamento das atividades voltadas para o levantamento, o mapeamento e a racionalizaç",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 35444000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "38",
+    "nome": "RESPONSABILIDADE FISCAL E TRANSPARÊNCIA NA ADMINISTRAÇÃO PÚBLICA",
+    "objetivo": "DESCRIÇÃO DO CENÁRIO ATUALO Município de Campo Grande/MS vem enfrentando desafios crescentes relacionados à modernização da gestão fiscal, arrecadação eficiente de tributos, controle orçamentário e transparência das informações públicas. A infraestrutur",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 426007000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "8",
+    "nome": "GESTÃO E MANUTENÇÃO DA SAS",
+    "objetivo": "Secretária de Assistência Social_ SAS.",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 273577000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "11",
+    "nome": "GESTÃO E MANUTENÇÃO DA SEPPE",
+    "objetivo": "A Secretaria Especial de Planejamento e Parcerias Estratégicas - SEPPE foi criada por meio do Decreto 16.1244 de 13 de janeiro de 2025.À Secretaria Especial de Planejamento e Parcerias Estratégicas - SEPPE, para a consecução de suas finalidades, compete:",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 17434000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "50",
+    "nome": "DESENVOLVIMENTO URBANO E GESTÃO DEMOCRÁTICA E PARTICIPATIVA",
+    "objetivo": "Melhorar a qualidade do espaço urbano e rural por meio de planejamento articulado, integrado e sustentável, priorizando-se a revisão da legislação urbanística e ambiental com o uso de ferramentas inovadoras de geoestatística que proporcionam informações c",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 41333000.0,
+    "acoesPrevistas": 6,
+    "acoes": []
+   },
+   {
+    "cod": "2",
+    "nome": "GESTÃO E MANUTENÇÃO DA AGETRAN",
+    "objetivo": "O atendimento às demandas administrativas, financeiras e operacionais é fundamental para garantir uma gestão eficiente e eficaz, promovendo ações necessárias para assegurar o pleno funcionamento da Agência, especialmente no apoio às áreas de mobilidade,",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 60794000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "17",
+    "nome": "PROMOÇÃO DO DIREITO, PROTEÇÃO E EMPODERAMENTO DE MULHERES MULHER ATITUDE",
+    "objetivo": "A política pública para a mulher se constitui em um conjunto de ações articuladas e integradas, organizadas em duas vertentes: a da promoção do direito e a da proteção.A promoção do direito engloba diversas ações, dentre elas: fortalecimento das instânci",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 32760000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "40",
+    "nome": "GESTÃO E MANUTENÇÃO DA FUNSAT",
+    "objetivo": "GESTÃO E MANUTENÇÃO DA FUNSAT.",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 19195000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "14",
+    "nome": "GESTÃO DE BENEFÍCIOS",
+    "objetivo": "GESTÃO DE BENEFÍCIOS",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 3029935000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "6",
+    "nome": "GESTÃO E MANUTENÇÃO DA EMHA",
+    "objetivo": "GERENCIAR A CARTEIRA DE MUTUÁRIOS DA EMHA, REGULARIZAR DOCUMENTAÇÃO DOS IMÓVEIS JÁ ENTREGUES E INCREMENTAR A ARRECADAÇÃO PARA FACULTAR NOVOS INVESTIMENTOS NA ÁREA HABITACIONAL.",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 49361000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "31",
+    "nome": "GESTÃO E MANUTENÇÃO DO IMPCG",
+    "objetivo": "GESTÃO E MANUTENÇÃO DO IMPCG",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 115872000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "28",
+    "nome": "AÇÕES LEGISLATIVAS DE CAMPO GRANDE: DEMOCRACIA E JUSTIÇA SOCIAL",
+    "objetivo": "A Câmara Municipal de Campo Grande/MS realiza suas atividades por meio de 29 Vereadores e de seu quadro de servidores efetivos e comissionados.Tem por objetivo maior representar o cidadão campo-grandense por meio da elaboração de leis e da fiscalização d",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 571760000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "46",
+    "nome": "GESTÃO E MANUTENÇÃO DA FUNESP",
+    "objetivo": "Em Campo Grande, a prática esportiva enfrenta desafios como infraestrutura precária, baixa integração com saúde e educação e acesso limitado em áreas periféricas. Para enfrentar essas questões, foi criado o Plano Municipal de Esporte e Lazer (PLAMEL),",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 22145000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "54",
+    "nome": "DESENVOLVIMENTO CULTURAL DE CAMPO GRANDE",
+    "objetivo": "O Programa apresentado refere-se à elaboração e execução de ações visando o fortalecimento da cadeia produtiva cultural no municipio de Campo Grande, além de abranger o reconhecimento da produção existente nas sete regiões e em seus distritos, o program",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 131391000.0,
+    "acoesPrevistas": 3,
+    "acoes": []
+   },
+   {
+    "cod": "49",
+    "nome": "GESTÃO AMBIENTAL EFICIENTE",
+    "objetivo": "Melhorar a qualidade do espaço urbano e rural por meio de planejamento articulado, integrado, sustentável e a fiscalização eficiente, priorizando-se a revisão da legislação urbanística e ambiental, bem como, as ações de fiscalização com o uso de ferrament",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 60554000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "25",
+    "nome": "GESTÃO E MANUTENÇÃO DA SEMADES",
+    "objetivo": "GESTÃO E MANUTENÇÃO DA SEMADES",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 60806000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "53",
+    "nome": "GESTÃO E MANUTENÇÃO DA AGEREG",
+    "objetivo": "A Agéncia Municipal de Regulação dos Servicos Publicos - AGEREG, enquanto autarquia com papel técnico e estratégico no acompanhamento e fiscalizagdo dos servicos publicos delegados, depende de uma estrutura administrativa sélida e eficiente para garant",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 20215000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "52",
+    "nome": "REGULAR E FISCALIZAR OS SERVIÇOS PÚBLICOS REGULADOS",
+    "objetivo": "A Agência Municipal de Regulação dos Serviços Públicos - AGEREG, criada pela Lei N. 4.423/2006, é a autarquia responsável por fiscalizar a prestação dos serviços públicos (concessões, autorizações e permissões), bem como por editar normas de ordem técn",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 32539000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "55",
+    "nome": "GESTÃO E MANUTENÇÃO DA FUNDAC",
+    "objetivo": "GESTÃO E MANUTENÇÃO DA FUNDAC",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 37383000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "36",
+    "nome": "PAGAMENTO DA DÍVIDA DO MUNÍCIPIO",
+    "objetivo": "PAGAMENTO DA DÍVIDA DO MUNÍCIPIO",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 681551000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "27",
+    "nome": "GESTÃO E MANUTENÇÃO DA SESDES",
+    "objetivo": "A Secretaria Especial de Segurança e Defesa Social (SESDES), criada por meio da Lei n. 5.413/2014, tem por finalidade elaborar e implementar as políticas de segurança pública do Município, tendo como foco principal a proteção dos munícipes e dos próprios",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 73997000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "7",
+    "nome": "PROTEÇÃO SOCIAL E INCLUSÃO CIDADÃ",
+    "objetivo": "A Proteção Social Básica tem como objetivo prevenir situações de risco por meio do desenvolvimento de potencialidades e aquisições e o fortalecimento de vínculos familiares e comunitários, de acordo com a Tipificação Nacional de Serviços Socioassistenciai",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 578321000.0,
+    "acoesPrevistas": 15,
+    "acoes": []
+   },
+   {
+    "cod": "47",
+    "nome": "ESPORTE E LAZER PARA TODOS EM CAMPO GRANDE",
+    "objetivo": "Segundo o VIGITEL 2023, 62,8% dos adultos de Campo Grande apresentam excesso de peso e 19,9% obesidade, índices superiores às médias nacional e estadual. A prática esportiva é limitada, especialmente nas periferias, com infraestrutura precária e pouca",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 79602000.0,
+    "acoesPrevistas": 2,
+    "acoes": []
+   },
+   {
+    "cod": "37",
+    "nome": "GESTÃO FISCAL EFICIENTE",
+    "objetivo": "O Município de Campo Grande/MS vem enfrentando desafios crescentes relacionados à modernização da gestão fiscal, arrecadação eficiente de tributos, controle orçamentário e transparência das informações públicas. A infraestrutura tecnológica apresenta defa",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 40000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   },
+   {
+    "cod": "43",
+    "nome": "PREFEITURA MAIS COMUNITÁRIA",
+    "objetivo": "O programa busca levar o poder público para dentro da comunidade. Uma das maiores reclamações é a dificuldade de acesso dos serviços públicos e do canal de interlocução entre a comunidade e o poder público, bem como fazer o acompanhamento dos serviços e l",
+    "finalidade": "",
+    "publico": "",
+    "orgao": "",
+    "valorGlobal": 26883000.0,
+    "acoesPrevistas": 1,
+    "acoes": []
+   }
+  ]
+ },
+ "ldo": {
+  "exercicio": null,
+  "lei": "",
+  "prioridades": [],
+  "metasFiscais": []
+ },
+ "loa": {
+  "exercicio": 2026,
+  "lei": "LOA 2026 — Projeto de Lei n. 12.049/25, publicada no DIOGRANDE n. 8.175, de 30/12/2025",
+  "dotacoes": [
+   {
+    "programa": "19",
+    "acao": "1001",
+    "nome": "EXPANSÃO DA REDE DE EDUCAÇÃO INFANTIL MUNICIPAL",
+    "unidadeOrcamentaria": "0909F",
+    "unidadeGestora": "Secretaria Municipal de Educação — SEMED",
+    "funcional": "12.365.19.1001",
+    "funcao": "12",
+    "subfuncao": "365",
+    "naturezaDespesa": "",
+    "fonte": "",
+    "dotacaoInicial": 22670000,
+    "dotacaoAtualizada": 22670000
+   },
+   {
+    "programa": "19",
+    "acao": "1002",
+    "nome": "EXPANSÃO DA REDE DO ENSINO FUNDAMENTAL DA REME",
+    "unidadeOrcamentaria": "0909F",
+    "unidadeGestora": "Secretaria Municipal de Educação — SEMED",
+    "funcional": "12.361.19.1002",
+    "funcao": "12",
+    "subfuncao": "361",
+    "naturezaDespesa": "",
+    "fonte": "",
+    "dotacaoInicial": 7529000,
+    "dotacaoAtualizada": 7529000
+   },
+   {
+    "programa": "19",
+    "acao": "2001",
+    "nome": "OTIMIZAÇÃO DO ATENDIMENTO NA EDUCAÇÃO INFANTIL",
+    "unidadeOrcamentaria": "0909F",
+    "unidadeGestora": "Secretaria Municipal de Educação — SEMED",
+    "funcional": "12.365.19.2001",
+    "funcao": "12",
+    "subfuncao": "365",
+    "naturezaDespesa": "",
+    "fonte": "",
+    "dotacaoInicial": 456072000,
+    "dotacaoAtualizada": 456072000
+   },
+   {
+    "programa": "19",
+    "acao": "2002",
+    "nome": "OTIMIZAÇÃO DO ATENDIMENTO NO ENSINO FUNDAMENTAL DA REME",
+    "unidadeOrcamentaria": "0909F",
+    "unidadeGestora": "Secretaria Municipal de Educação — SEMED",
+    "funcional": "12.361.19.2002",
+    "funcao": "12",
+    "subfuncao": "361",
+    "naturezaDespesa": "",
+    "fonte": "",
+    "dotacaoInicial": 1063733000,
+    "dotacaoAtualizada": 1063733000
+   },
+   {
+    "programa": "19",
+    "acao": "2003",
+    "nome": "OTIMIZAÇÃO DO ATENDIMENTO NO ENSINO MÉDIO DA REME",
+    "unidadeOrcamentaria": "0909F",
+    "unidadeGestora": "Secretaria Municipal de Educação — SEMED",
+    "funcional": "12.362.19.2003",
+    "funcao": "12",
+    "subfuncao": "362",
+    "naturezaDespesa": "",
+    "fonte": "",
+    "dotacaoInicial": 23487000,
+    "dotacaoAtualizada": 23487000
+   }
+  ],
+  "alteracoes": [],
+  "alteracoesObservacao": "Alterações orçamentárias do exercício não carregadas: a dotação atualizada repete a inicial.",
+  "observacao": "Valores extraídos do anexo Vinculação das Ações e Unidades Orçamentárias aos Programas, Objetivos e Iniciativas do PPA (páginas 182 a 187 do suplemento)."
+ },
+ "execucao": {
+  "empenhos": [
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "1001",
+    "exercicio": "2026",
+    "valor": 1162067.11,
+    "situacao": "ativo"
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "1002",
+    "exercicio": "2026",
+    "valor": 6498657.54,
+    "situacao": "ativo"
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2001",
+    "exercicio": "2026",
+    "valor": 436166421.01,
+    "situacao": "ativo"
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2002",
+    "exercicio": "2026",
+    "valor": 1011147034.69,
+    "situacao": "ativo"
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2003",
+    "exercicio": "2026",
+    "valor": 17507135.67,
+    "situacao": "ativo"
+   }
+  ],
+  "liquidacoes": [
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "1001",
+    "exercicio": "2026",
+    "valor": 897072.96,
+    "quantidade": null,
+    "unidade": "",
+    "documento": "consolidado da remessa",
+    "descricao": "total liquidado no exercício"
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "1002",
+    "exercicio": "2026",
+    "valor": 145236.1,
+    "quantidade": null,
+    "unidade": "",
+    "documento": "consolidado da remessa",
+    "descricao": "total liquidado no exercício"
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2001",
+    "exercicio": "2026",
+    "valor": 250458178.36,
+    "quantidade": null,
+    "unidade": "",
+    "documento": "consolidado da remessa",
+    "descricao": "total liquidado no exercício"
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2002",
+    "exercicio": "2026",
+    "valor": 633021452.05,
+    "quantidade": null,
+    "unidade": "",
+    "documento": "consolidado da remessa",
+    "descricao": "total liquidado no exercício"
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2003",
+    "exercicio": "2026",
+    "valor": 12053317.84,
+    "quantidade": null,
+    "unidade": "",
+    "documento": "consolidado da remessa",
+    "descricao": "total liquidado no exercício"
+   }
+  ],
+  "pagamentos": [
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "1001",
+    "exercicio": "2026",
+    "valor": 890524.48
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "1002",
+    "exercicio": "2026",
+    "valor": 145236.1
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2001",
+    "exercicio": "2026",
+    "valor": 217571580.44
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2002",
+    "exercicio": "2026",
+    "valor": 486660313.12
+   },
+   {
+    "numero": "consolidado 2026",
+    "data": "2026-12-31",
+    "acao": "2003",
+    "exercicio": "2026",
+    "valor": 10885779.54
+   }
+  ]
+ },
+ "contratos": [],
+ "piloto": {
+  "programa": "19",
+  "observacao": "Programa piloto: 5 ações detalhadas com execução de 2026."
+ },
+ "fonteLei": "PPA 2026-2029 de Campo Grande, publicado no DIOGRANDE n. 8.175, de 30/12/2025 — anexo Objetivos e Metas por Macrodesafio."
+}
